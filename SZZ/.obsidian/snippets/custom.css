@@ -1,0 +1,23 @@
+body {
+  --list-marker-color: #D74C47;
+  --h2-color: #7B6CD9;
+  --h3-color: #FF9777;
+  --h4-color: #0089B6;
+  text-align: justify;
+}
+
+.maths {
+     color: #FFC861;
+     font-style: oblique;
+}
+
+.term {
+     color: #007DE1;
+     font-style: oblique;
+}
+
+img[alt*="center"] {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

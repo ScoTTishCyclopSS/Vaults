@@ -1,0 +1,10 @@
+{
+  "accentColor": "",
+  "theme": "moonstone",
+  "interfaceFontFamily": "",
+  "textFontFamily": "Inter",
+  "enabledCssSnippets": [
+    "custom"
+  ],
+  "baseFontSize": 17
+}

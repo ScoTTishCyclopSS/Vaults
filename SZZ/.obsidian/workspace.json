@@ -1,0 +1,172 @@
+{
+  "main": {
+    "id": "0102967bec193d8a",
+    "type": "split",
+    "children": [
+      {
+        "id": "4128f901eb9d4526",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5521ae2f21e8b9a1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Okruhy specializace Počítačové hry a grafika/B4B39IUR.md",
+                "mode": "preview",
+                "source": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6686f284b382e75d",
+    "type": "split",
+    "children": [
+      {
+        "id": "e6688fc0ccd4b110",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4d67e9bce7e387be",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "5c02ca7372bb5ecc",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "5d1042dac5c7f09d",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200
+  },
+  "right": {
+    "id": "cc2c389c7269082a",
+    "type": "split",
+    "children": [
+      {
+        "id": "cdabbecb94431661",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "61dfa4a7a410543d",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Okruhy specializace Počítačové hry a grafika/B4B39IUR.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "200114fb8842bd83",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Okruhy specializace Počítačové hry a grafika/B4B39IUR.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "c25b4242df2c81bb",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "2a3452bb27b587b8",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Okruhy specializace Počítačové hry a grafika/B4B39IUR.md"
+              }
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "4d67e9bce7e387be",
+  "lastOpenFiles": [
+    "Okruhy specializace Počítačové hry a grafika/B4B39VGO.md",
+    "Okruhy specializace Počítačové hry a grafika/B4B39IUR.md",
+    "Okruhy specializace Počítačové hry a grafika/B4B39HRY.md",
+    "Okruhy specializace Počítačové hry a grafika/B0B01LGR.md",
+    "Okruhy specializace Počítačové hry a grafika/B0B39PGR.md",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822181415.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822175543.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822161045.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822124036.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822122728.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822122644.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822122432.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822122112.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822121620.png",
+    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230822121107.png",
+    "Untitled",
+    "Okruhy specializace Počítačové hry a grafika/attachments",
+    "Pasted.md",
+    "Okruhy specializace Počítačové hry a grafika/Metody prohledávánı́ stavového prostoru, algoritmy. Reprezentace znalostı́ a rozhodovánı́ s nepr ̌esnou znalostı́. Dvouhráčové hry..md",
+    "Okruhy specializace Počítačové hry a grafika"
+  ]
+}
