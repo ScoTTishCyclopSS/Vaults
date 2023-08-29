@@ -205,7 +205,8 @@ EX2:
 1. do CNF
 	- S1: a => b |=| ¬a ∨ b, CNF (1 kl.)
 	- S2: b => c |=| ¬b ∨ c, CNF (1 kl.)
-	- γ: (a ∨ b) => c |=| (a ∨ b) ∧ ¬c, CNF (2 kl.)
+	- γ: (a ∨ b) => c |=| ¬(a ∨ b) ∨ c
+	  ¬γ = (a ∨ b) ∧ ¬c, CNF (2 kl.)
 2. tabulka
 
 . | ¬a ∨ b | ¬b ∨ c | a ∨ b | ¬c | | | res

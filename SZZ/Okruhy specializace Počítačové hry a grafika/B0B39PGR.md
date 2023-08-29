@@ -172,7 +172,8 @@ Formula: <span class="maths">d ~ log2(max(pu, pv))</span>
 #### Mapa prostředí
 Než si rozebereme použití mapování prostředí, musíme si rozebrat metody mapování textur.
 
-**Texture mapping:**
+##### Texture mapping
+
 - <span class="term">forward (direct)</span> → mapování obrazových bodů na polygon, může vytvářet díry a překrývání v obrázcích textur! Textura se vypočítá na základě polohy povrchu nebo souřadnic.
    Princip: <span class="maths">(uv [surface parametrization] → object space [projection] → screen space)</span>
 - <span class="term">inverse</span> → vypočítáme souřadnice textury pro daný bod na povrchu objektu vypočítané ze souřadnic obrazovky! Textura se vypočítá spíše na základě směru nebo orientace povrchu.
@@ -683,6 +684,8 @@ K vytvoření této úsečky potřebujeme 2 body a 2 vektory. Pro každý bod a 
 
 ##### Catmull-Rom
 
+#todo 
+
 #### Aproximace
 Tento typ má následující vlastnosti:
 1. vážený součet pozic bodů × váha (součet všech vah = 1)
@@ -691,7 +694,22 @@ Tento typ má následující vlastnosti:
 
 ##### Bézier
 
+Jsou definovány sadou řídicích bodů, které ovlivňují tvar křivky.  Bézierovy křivky mohou mít různé stupně, ale nejběžnější jsou kubické Bézierovy křivky (stupeň 3). 
+Kubická Bézierova křivka je definována čtyřmi řídicími body: dvěma kotevními body a dvěma řídicími body. Křivka plynule prochází kotevními body a zároveň je ovlivňována řídicími body, čímž vzniká široká škála tvarů.
+
+Pouziti | Obrazek
+--- | :-:
+Vektorová grafika:<ul><li>Obsahuje posloupnost příkazů, které říkají, co a jak se má vykreslit<li>Příkazy přesně určují vykreslované tvary</li><li>Příkazy se vykreslují v rozlišení displeje</li><li>Pokud zvětšíme obrázek jsou příkazy vykresleny znovu</li></ul> | ![[Pasted image 20230824222704.png\|250]]
+Fonty:<ul><li>**Type 1 (PostScript)** jeden z prvních formátů digitálních písem vyvinutých Adobe. K definování tvarů znaků používají Bézierovy křivky a jsou založeny na jazyce pro popis stránek PostScript. Currently no support!</li><li>**Type 3** na rozdíl od Type 1 umožňuje pro písma složitější grafiku a efekty (e.g. stínování, gradienty atd.)</li><li>**TrueType** byl vytvořen Apple a Microsoft jako způsob zlepšit vykreslování písem na obrazovkách a tiskárnách. Používají kvadratické Bézierovy křivky. </li></ul> | ![[Pasted image 20230824223801.png\|200]]
+Animace: <ul><li>K určení vlastností objektů používáme klíčové snímky (keyframes)</li><li>musíme určit, jak se bude hodnota měnit od jednoho klíčového snímku do druhého</li></ul> | ![[Pasted image 20230824231738.png]]
+
+[[#Adaptivní vykreslování Bézierovy křivky (algoritmus de Casteljau).]]
+
 ##### B-spline
+
+B-spliny jsou spojenim segmentu (Bézierovych křivek) a nabízejí větší flexibilitu než Bézierovy křivky, protože umožňují místní kontrolu nad tvarem křivky (pro kazdy segment sve nezavisle bazove funkce). Úpravou polohy řídicích bodů lze křivku upravit, aniž by byla ovlivněna celá křivka. B-spline křivky se běžně používají v aplikacích pro počítačem podporované navrhování (CAD).
+
+[[#Bezier Spline]]
 
 ---
 
@@ -790,6 +808,9 @@ Všechny úsečky, které se budou spojovat, se většinou vyrovnávají pomocí
 Dále se podíváme na všechny varianty a dozvíme se, jak s nimi souvisí derivace různých úrovní a jak tečny mění vzhled složené křivky.
 
 Představme si, že se naše křivka skládá z několika částí, ale přesto chceme, aby tvořila souvislý matematický tvar. Zavedeme si nový termín - **Bezier Spline**.
+
+#### Bezier Spline
+
 Jak jsme se dozvěděli v předchozích kapitolách - naše křivka je definována **řídicími body (control points)** a bodům, v nichž se úsečky spojují, říkáme **uzly (knots)**, a konečně při sestavování křivky tohoto rozsahu se cestování po ní zvětšuje, takže potřebujeme definovat nový časový interval, po kterém budeme chodit s novým parametrem **u** a který se bude skládat z tzv. **uzlových intervalů (knot intervals)**.
 
 ![[Pasted image 20230813151414.png]]
