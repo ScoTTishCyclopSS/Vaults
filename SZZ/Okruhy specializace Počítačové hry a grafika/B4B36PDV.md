@@ -711,3 +711,448 @@ Závislosti: Po výběru pivota se změní všechny hodnoty pro řádky a sloupc
 
 ## 2. Distribuované výpočty/systémy
 
+### Úvod do distribuovaných systémů (DS)
+
+**DS** je soubor (collection) nezávislých, autonomních výpočetních jednotek propojených komunikační sítí. Výpočetní jednotky (nebo *uzly*) komunikují formou posílání zpráv za účelem určité formy spolupráce.
+
+- Internet
+- Blockchain
+- Uber
+- Datové centrum
+- atd.
+
+Fun fact (haha-momento): Od té doby, co existují počítačové sítě (natož Internet!) už prakticky neexistují systémy, které by nebyly aspoň částečně **distribuované**!
+
+![[Pasted image 20230829134744.png|center|400]]
+
+Cíle při vývoji DS:
+- Problém **atomického commitu**: atomický commit je sada více operací, které jsou provedeny jako jedná operace!
+  (e.g. **vyberete** si z bankomatu 1000 Kč -> ze zůstatku z vašeho účtu **se odečte** 1000 Kč)
+- Schopnost řešit více úloh, než je možné s jedním počítačem (podobné jako u paralelních výpočtů, ale řeší i případy, když už jeden počítač nestačí)
+- Schopnost zajistit (téměř) trvalou dostupnost požadovaných služeb
+
+#### Charakteristiky DS
+
+Distribuované systémy | Paralelní systémy
+--- | ---
+<ul><li>Výpočetní jednotky **nemají sdílenou paměť**</li><li>Výpočetní jednotky **nesdílejí globální hodiny**</li><li>Výpočetní jednotky **selhávají nezávisle**</li></ul> | <ul><li>Předávání stavu **používá sdílenou paměť** a synchronizační mechanismy</li><li>Přístup ke **společným hodinám**</li><li>**Selže buď nic nebo vše**</li></ul>
+
+#### Čas a typy selhání v DS
+
+Přesné globální hodiny by umožnily globální uspořádání výpočetních kroků v DS. Bohužel takové neexistují a každý proces má své lokální hodiny.
+Mezitím lokální hodiny nemusí ukazovat přesný čas a jejich synchronizace je možná jen s určitou přesností.
+
+##### Asynchronní model DS
+
+Vlastnosti | Schema
+--- | :-:
+<ul><li>Žádné časové limity na rychlost vykonávání procesů</li><li>Žádné časové limity na trvání přenosu zpráv</li><li>Žádné časové limity na časový drift lokálních hodin</li></ul> | ![[Pasted image 20230829142421.png\|250]]
+
+##### Synchronní model DS
+
+Vlastnosti | Schema
+--- | :-:
+<ul><li>Známe horní limit na rychlost vykonávání procesů</li><li>Známé horní limit na dobu přenosu zpráv</li><li>Procesy mají lokální hodiny a je znám horní limit na rychlosti driftu lokálních hodin vzhledem k globálním hodinám</li></ul> | ![[Pasted image 20230829142341.png\|250]]
+
+##### Částečně synchronní model DS
+
+V tomto modelu **mohou procesy zjistit (pomoci timeout), když jiné procesy selžou**. Protože se však detekce provádí pomocí časování, vznikají náklady mnohem vyšší než typické zpoždění zpráv.
+
+**Timeout? Why tho?** 
+Pro většinu systému je relativně snadné definovat časové limity, které platí *většinu času*. Občas se ale mohou vyskytnout období, během kterých tyto časové limity neplatí:
+
+- zpoždění procesů (e.g. swappování, garbage collection...) 
+- zpoždění komunikace (e.g. přetížení sítě, ztráta zpráv...)
+
+##### Selhání procesu
+
+- **Havárie (crash/fail-stop)**: proces přestane vykonávat algoritmus (a reagovat na zprávy).
+- **Libovolné (byzantské) selhání**: proces může pracovat dále (a reagovat na zprávy), ale vykonává chybný algoritmus (z důvodu softwarový chyby nebo úmyslu).
+
+Krátce: nebo chybný algoritmus nebo vůbec bez algoritmu!
+
+##### Selhání kanálu
+
+- **Ztráta zprávy (message drop)**: zpráva není doručena cílovému procesu (např. kvůli přetížení sítě)
+- **Rozdělení (partitioning)**: procesy jsou rozdělené do oddílů (partitions) tak, že v rámci oddílu je komunikace možná, ale mezi oddíly nikoliv
+
+Krátce: chyba přenosu zprávy nebo chyba komunikace mezi skupinami procesů!
+
+##### Selhání časování (timing)
+
+V případě [[#Synchronní model DS|synchronních DS]] definujeme ještě selhání časování, pokud se doba reakce procesu nebo přenosu zprávy po síti liší od předem určeného časového intervalu!
+
+---
+
+### Detekce selhání v DS
+
+#### Základní protokoly pro detekci selhání
+
+##### Centralizovaný heartbeat
+
+Princip | Obrazek
+--- | :-:
+<ul><li>Hearbeats (jako zprávy) jsou odesílány periodicky (každých 𝑇 časových jednotek) jednomu vybranému procesu</li><li>Hearbeat má pořadové číslo</li><li>Po odeslání hearbeatů je inkrementován lokální counter hearbeatů každého procesu</li></ul>| ![[Pasted image 20230829152528.png\|300]]
+
+Klady:
+- Úplný pro všechny procesy s výjimkou $p_j$ (je bezchybným procesem)
+
+Zapory:
+- Selhání $p_j$ není detekováno... (kdo to bude dělat? Hmmm???)
+- Při vysokém počtu procesů může být $p_j$ přetížený (overloaded)
+
+##### Kruhový heartbeat
+
+Princip | Obrazek
+--- | :-:
+<ul><li>Hearbeats (jako zprávy) jsou odesílány periodicky sousedům každého procesu (jedno- nebo oboustranně)</li></ul>| ![[Pasted image 20230829153345.png\|300]]
+
+Klady:
+- Není centrální bod!
+
+Zapory:
+- Neúplné při současném selhání více procesů...
+- Je třeba udržovat kruh (problém se zasíláním zpráv)
+
+##### Všichni-všem (all-to-all) heartbeat
+
+Princip | Obrazek
+--- | :-:
+<ul><li>Každý proces posílá periodicky heartbeats  (jako zprávy) všem ostatním procesům</li></ul>| ![[Pasted image 20230829153551.png\|300]]
+
+Klady:
+- Rovnoměrná zátěž všech procesů (ale vysoká шо пздц)
+- Úplný! Pokud zůstane aspoň jeden nehavarovaný proces, detekuje selhání libovolného jiného procesu.
+
+Zapory:
+- Nízká přesnost.. Stačí, když jeden proces nedostane včas heartbeats a může označit všechny procesy jako havarované (vysoké zatížení všech uzlů kvůli neustálému odesílání a přijímání)
+
+#### Detektory selhání a jejich vlastnosti
+
+Požadované vlastnosti detektorů selhání jsou:
+- **Úplnost**: každé selhání je v průběhu času detekována alespoň jedním bezchybným procesem
+- **Přesnost**: žádné falešné detekce (pokud je proces detekován jako havarovaný, tak 100% havaroval)
+	- chybně detekované selhání vede ke zbytečným operacím, ale lepší než přehlédnutí havárie!
+- **Rychlost detekce**: je určena časem, než první proces proces detekuje selhání (čím menší, tím lepší)
+- **Škálovatelnost**: měřeno počtem odeslaných zpráv a rovnoměrným rozložením komunikačního zatížení
+
+Tyto vlastnosti lze popsat jako faktory, které budou měřit efektivitu vytvořeného DS:
+
+![[Pasted image 20230829152319.png | center | 400]]
+
+##### SWIM (Scalable weakly consistent infection-style proces group membership protocol) Detektor Selhání
+
+Princip algoritmu:
+1. Hlavní uzel $p_i$ posílá ostatním vláknům heartbeat zprávy (*ping*). Čeká se na *timeout*.
+2. Pokud nepřijde žádná odpověď (*acknowledge*) z nejakého vlákna (označme $p_j$) a dojde k timeoutu, $p_i$ odešle požadavek na $p_j$-heartbeat (*ping-req*) $k$-náhodným vláknům.
+3. Tato náhodná vlákna provedou stejný příkaz (*ping*) na $p_j$, a pokud $p_j$ odpoví (*acknowledge*) nebo mlčí (*timeout*), pošlou zprávu (*acknowledge*) zpět na $p_i$.
+
+![[Pasted image 20230829154124.png]]
+
+---
+
+### Čas a kauzalita v DS: Uspořádání událostí v DS.
+
+#### Fyzické hodiny a jejich synchronizace
+
+Základní myšlenkou je použití **externího zdroje synchronizace**!
+Všechny procesy $p_i$ se synchronizují s externím časovým serverem $S$.
+
+![[Pasted image 20230829162033.png | center]]
+
+Zapory:
+- V okamžiku, kdy $p_i$ obdrží odpověď, se už čas posunul!
+- Přesnost' lokálních hodin $C_i$ závisí na komunikační latenci!
+
+Než se začneme, je třeba uvést následující pojmy:
+
+- **Mimoběžnost hodin (clock skew)** - Rozdíl v času hodin dvou procesů (jako vzdálenost dvou jedoucích automobilů). 
+	- Mají-li dvoje hodiny nenulovou mimoběžnost, jsou nesynchronizované.
+- **Drift hodin (clock drift)** - Rozdíl v rychlosti (frekvenci) hodin dvou procesů (jako rozdíl v rychlosti jedoucích automobilů).
+	- Mají-li dvoje hodiny nenulový drift, tak se jejich mimoběžnost v čase bude zvyšovat.
+
+##### Cristianův Algoritmus
+
+1. Proces $p_i$ potřebuje synchronizovat svůj čas, zašle žádost o aktuální čas serveru $S$ v čase $t$
+2. Při odesílání žádosti si proces $p_i$ zapamatuje svůj lokální čas $C_i$
+3. Server $S$ obdrží žádost od procesu $p_i$ a odešle svůj aktuální čas $t_r$ zpět k procesu $p_i$
+4. Proces $p_i$ vypočítá časový rozdíl mezi časem, kdy žádost byla odeslána a časem, kdy byla přijata (tento rozdíl značí, jak dlouho trvala cesta od procesu $p_i$ k serveru $S$)
+5. Polovinu tohoto rozdílu proces $p_i$ přičte k času, kdy byla žádost odeslána (protože cesta k serveru $S$ a zpět trvala nějakou dobu, a tímto způsobem proces $p_i$ koriguje svůj čas tak, aby byl blíže aktuálnímu času severu $S$) a aktualizuje lokální čas $C_i$!
+   ![[Pasted image 20230829173355.png | 250]]
+
+![[Pasted image 20230829173306.png]]
+
+##### NTP
+
+NTP servery jsou uspořádány do stromu, kde:
+- uzly synchronizují se svými rodiči a někdy i dalšími servery na stejné úrovni
+- klienti tvoří listy stromu
+
+![[Pasted image 20230829173955.png | center | 300]]
+
+Představme si následující situaci: Potomek (nějaký uzel) chce synchronizovat čas s jedním ze svých rodičů. V takovém případě je třeba provést následující kroky:
+
+1. Potomek odešle zprávu svému rodiči $Start$
+
+#todo...
+
+![[Pasted image 20230829173829.png]]
+
+#### Logické hodiny a jejich synchronizace
+
+Co kdybychom místo absolutního/fyzického času přiřazovali událostem **logické časové značky**? 
+
+Podle nové logiky - události na sobě závisí. Proto pro definování této závislosti zavádíme pojem **[[#Kauzální závislost/nezávisost|kauzální vztah mezi událostmi]]** (první událost může ovlivnit druhou).
+
+Systém za těchto podmínek bude vypadat takto:
+- Každý proces má **stav** (hodnoty proměnných)
+- Každý proces vykonává **akce**, aby změnil svůj stav. 
+	- Instrukce nebo..
+	- Poslání zprávy (send, receive)
+- **Událost** je výskyt akce. Poslání zprávy generuje dvě události: odeslání a přijetí. 
+- Každý proces má **lokální hodiny**
+
+##### Kauzální závislost/nezávisost
+
+- **$e_1$ → $e_2$**: **potenciálně kauzálně závislé** události (tj. $e_1$ mohla ovlivnit $e_2$, ale nemusela)
+	- pokud lze relace mezi událostí popsat jako "stalo se před" → potenciální kauzální závislost!
+	  ![[Pasted image 20230829164907.png|400]]
+- **$e_1$ ∥ $e_2$**: **současné** události ($e_1$  nemohla ovlivnit $e_2$ a $e_2$ nemohla ovlivnit $e_1$)
+
+EX:
+
+![[Pasted image 20230829165014.png]]
+
+##### Lamportův Algoritmus
+
+Lamportovy logické hodiny: 
+- Každý proces má své logické hodiny, které se synchronizují podle přijímaní zpráv
+- Používané prakticky ve všech distribuovaných systémech (a všech cloudových platformách)
+
+Princip algoritmu:
+Každý proces $p_i$ si udržuje lokální logické hodiny $C_i$ a nastavuje:
+1. Po každé události, která se odehraje v $p_i$, se $C_i$ inkrementuje o 1
+2. Každé zprávě $m$ odeslané procesem $p_i$ je přiřazena časová značka $ts(m) = C_i$
+3. Kdykoliv proces 𝑝𝑗 přijme zprávu $m$, tak provadi nasledujici kroky:
+	- upraví své lokální hodiny $C_j$ na $max\{C_j, ts(m)\}$
+	- ==přijetí zprávy je událost== a proto provede 1. krok!
+
+![[Pasted image 20230829162521.png]]
+
+---
+
+### Globální stav v DS a jeho výpočet
+
+**Globální stav** je množina lokální stavů procesů v DS a stavů všech komunikačních kanálů v jednom okamžiku. Takže **Globální snapshot** je záznamem globální stavu!
+
+Globální stav se mění, pokud dojde k události:
+- vykonání instrukce v procesu
+- poslání nebo přijetí zprávy
+
+#### Proč vůbec chceme znát stav systému?
+
+- **Garbage collection** - nutnost identifikovat objekty, na které není globálně žádná reference
+- **Detekce [[#Uváznutí (deadlock)]]** - nutnost identifikovat cykly globálním wait-for grafu
+- **Detekce ukončení výpočtu** - nutnost zajistit, že všechny procesy jsou pasivní a v žádném kanálu přenosu není žádná zpráva
+- **Checkpointing** za účelem obnovení globálního stavu systému.
+
+#### Řez distribuovaného výpočtu
+
+Pokud bychom měli globální hodiny, tak zaznamenat snapshot by bylo jednoduché: všechny procesy by zaznamenaly stav v dohodnutý čas, tj. v jednom fyzickém okamžiku. Fyzický okamžik by garantoval konzistenci zaznamenaného globálního stavu. Jak zaznamenat globální snapshotů bez globálních hodin?
+
+**Řez** je časová hranice v každém procesu a v každém komunikačním kanále.
+- události, které nastanou před řezem, jsou **v řezu**
+- události, které nastanou po něm, jsou **mimo řez**
+
+##### Konzistence
+
+Řez $R$ je **konzistentní** pokud splňuje [[#Kauzální závislost/nezávisost|kauzalitu]], tj. pokud pro každý pár událostí $e, f$ v systému platí: $f \in R ∧ e$ → $f ⇒ e \in R$  (==tj. nelze, aby v řezu byl "důsledek" a nebyla tam "příčina"==)
+
+**Konzistentní globální snapshot** odpovídá konzistentnímu řezu!
+Konzistence řezu je nezávislá na času (EX2), proto by měl být proveden ve stejném fyzickém času!
+
+EX:
+
+![[Pasted image 20230830161642.png]]
+
+EX2:
+
+![[Pasted image 20230830161813.png]]
+
+#### Chandy-Lamport algoritmus pro distribuovaný globální snapshot
+
+*Cíl*: Zaznamenat globální snapshot, tj. stav pro každý proces a každý komunikační kanál.
+*Předpoklad*: Každý proces je schopen zaznamenat svůj vlastní stav.
+*Nový pojem*: **ZNAČKA** - Speciální zpráva, na kterou procesy reagují.
+
+- pokud $p_i$ dosud nezaznamenal svůj stav:
+	- zaznamená svůj stav $S_i$
+	- zaznamená stav pro kazdy kanál $C_{m,i}$ jako prázdnou množinu
+	  (==do množiny budeme ukládat všechny zprávy které potkáme, protože de-fakto jsou po snapshotu==)
+	- odešle každým odchozím kanálem ZNAČKU (předtím než skrze kanál pošle jakoukoliv jinou zprávu)
+	- zapne zaznamenávání zpráv doručených skrze všechny ostatní příchozí kanály (kromě $C_{m,i}$)
+- jinak:
+	- $p_i$ zaznamená stav kanálu $C_{m,i}$ jako množinu všech zpráv, které $p_i$ obdržel skrze $C_{m,i}$ (od inicializaci snapshotu) 
+	- $p_i$ ukončí záznam kanálu $C_{m,i}$
+
+Algoritmus je ukončen jakmile:
+1. všechny procesy zaznamenaly svůj stav
+2. všechny procesy přijaly ZNAČKU
+
+EX:
+
+1. $p_1$ inicializuji snapshot
+	- zaznamená svůj stav $S_1$
+	- zaznamená stav kanálu: $C_{2,1}$ (pro $p_2$)
+	- zaznamená stav kanálu: $C_{3,1}$ (pro $p_3$)
+	- odešle každým odchozím kanálem ($p_2$ a $p_3$) ZNAČKU
+2. $p_3$ přijmá ZNAČKU od $p_1$
+	- zaznamená svůj stav $S_3$
+	- zaznamená stav kanálu $C_{1,3} = \{\}$ (jako prazdna mnozina, kde budou doručené zprávy, které přišly po této ZNAČCE)
+	- zaznamená stav kanálu $C_{2,3}$ (pro $p_2$)
+	- odešle každým odchozím kanálem ($p_1$ a $p_2$) ZNAČKU
+3. $p_1$  přijmá ZNAČKU od $p_3$
+	- zaznamená stav kanálu $C_{3,1} = \{\}$ (jako prazdna mnozina, kde budou doručené zprávy, které přišly po této ZNAČCE)
+	- ukončí záznam kanálu $C_{3,1}$
+4. $p_2$ přijmá ZNAČKU od $p_3$
+	- zaznamená svůj stav $S_2$
+	- zaznamená stav kanálu $C_{3,2} = \{\}$ (jako prazdna mnozina, kde budou doručené zprávy, které přišly po této ZNAČCE)
+	- zaznamená stav kanálu $C_{1,2}$ (pro $p_1$)
+	- odešle každým odchozím kanálem ($p_1$ a $p_3$) ZNAČKU
+5. $p_2$ přijmá ZNAČKU od $p_1$
+	- zaznamená stav kanálu $C_{1,2} = \{\}$ (jako prazdna mnozina, kde budou doručené zprávy, které přišly po této ZNAČCE)
+	- ukončí záznam kanálu $C_{1,2}$
+6. $p_3$ přijmá ZNAČKU od $p_2$
+	- zaznamená stav kanálu $C_{2,3} = \{\}$ (jako prazdna mnozina, kde budou doručené zprávy, které přišly po této ZNAČCE)
+	- ukončí záznam kanálu $C_{2,3}$
+7. $p_1$  přijmá ZNAČKU od $p_2$
+	- zaznamená stav kanálu $C_{2,1} = \{H → D\}$ (H → D je po ZNAČCE, proto ukladame)
+	- ukončí záznam kanálu $C_{2,1}$
+8. Konzistentní Řez bude podle všech stavu: $S_1$, $S_2$, $S_3$
+
+![[Pasted image 20230830165024.png]]
+![[Pasted image 20230830174034.png]]
+
+#### Stabilní vlastnosti DS
+
+Výsledkem Chandy-Lamport algoritmu pro výpočet globální snapshotu je [[#Konzistence|konzistentní řez]].
+Chandy-Lamport snapshotů algoritmus lze použít pro detekci stabilních globálních vlastností.
+
+##### Živost (Liveness)
+
+Garance, že v DS časem **dojde k něčemu dobrému** (bude dosažen žádoucí stav).
+
+Příklady:
+- Distribuovaný výpočet -> výpočet skončí
+- Detekce selhání -> každé selhání je detekováno
+- Globální snapshot -> algoritmus doběhne (lol)
+
+##### Bezpečnost (Safety)
+
+Garance, že v DS nikdy **nedojde k něčemu špatnému** (nebude dosažen nežádoucí stav). Příklady: 
+- Nedojde k [[#Uváznutí (deadlock)|deadlocku]]
+- Detekce selhání -> přesnost detekci
+- Globální snapshot -> snapshot je konzistentním řezem
+
+##### Stabilní vlastnost
+
+Je taková vlastnost, že **jakmile je ve výpočtu jednou splněna, zůstává splněna navždy**.
+
+- příklad stabilní vlastnost [[#Živost (Liveness)|živosti]]: výpočet skončil
+- příklad stabilní vlastnosti *porušující* [[#Bezpečnost (Safety)|bezpečnost]]: nastalo uváznutí
+- příklad nestabilní vlastnosti: na vstup do kritické sekce čekají právě dva procesy (deadlock)...
+
+---
+
+### Vzájemné vyloučení procesů v DS
+
+#### Algoritmy pro vyloučení (mutual exclusion) procesů a jejich vlastnosti 
+
+**Kritická sekce (KS)** je část kódu (všech procesů), u které potřebujeme zaručit, že ji vykonává v každém okamžiku maximálně jeden proces.
+
+Požadavky na algoritmus pro vyloučení procesu:
+- Bezpečnost: nejvýše jeden proces v kritické sekci v okamžiku
+- Živost: každý požadavek na vstup do kritické sekce je časem uspokojen
+
+##### Centralizovaný algoritmus
+
+- Zvolíme koordinátora (pomocí algoritmu [[#Volba lídra v DS|volby lídra]])
+- Lídr spravuje speciální **token** (umožňuje držiteli vstup do KS) a **frontu požadavků** na vstup do KS
+
+Princip:
+1. Libovolný proces $p$ pošli požadavek lídrovi
+2. Po přijetí požadavku z procesu $p$:
+	- lídr má **token** ? -> předá **token** procesu $p$
+	- lídr nemá **token** ? -> předá proces $p$ do fronty
+3. Po přijetí **tokenu** od procesu $p$:
+	- **fronta** je prázdná ? -> uchová **token**
+	- **fronta** není prázdná ? -> **fronta.pop()** proces z hlavy a pošlí mu **token**
+
+![[Pasted image 20230830230836.png|center|500]]
+
+Analýza:
+- Bezpečnost: Maximálně jeden proces v KS
+- Živost: na každý požadavek časem dojde
+
+##### Kruhový algoritmus
+
+EZ-PZ algoritmus. $N$ procesů organizovaných do kruhu.
+- Každý proces může poslat zprávu svému následníkovi
+- Koluje právě jeden **token**
+
+Princip:
+1. Proces $p$ ceka dokud nedostane **token**
+2. Proces $p$ ma **token** ? -> vstup do KS
+   (pokud obdrží **token** a neni v KS, tak předa **token** následníkovi)
+3. vystup z KS ? -> Proces $p$ posli **token** následníkovi
+
+![[Pasted image 20230830232722.png | center | 400]]
+
+Analýza:
+- Bezpečnost: právě jeden **token**
+- Živost: **token** časem oběhnou celý kruh
+
+##### Ricart-Agrawalův algoritmus
+
+Nepoužívá token, ale využívá [[#Kauzální závislost/nezávisost|kauzalitu]] (skalární hodiny).
+- Každý proces si udržuje logickou proměnou stav (inicializovanou na RELEASED) a seznam požadavků na vstup
+
+Princip:
+1. Proces $P_i$ chci do KS:
+	- Nastaví stav na **WANTED** ⟨𝑇𝑖 , i⟩
+	- Pošli **REQUEST** ⟨𝑇𝑖 , i⟩ všem procesům (⟨𝑇𝑖 , i⟩ je aktuální Lamportův logický čas v $P_i$)
+2. Proces $P_j$ po přijetí REQUEST:
+	- stav = **HELD** ? -> přidava **REQUEST** do seznamu čekajících požadavků
+	- stav = **WANTED** a lokalni Lamportův cas je vetsi nez Lamportův cas z pozadavku -> přidava **REQUEST** do seznamu čekajících požadavků
+	- jinak -> pošli **OK** do $P_i$
+3. Proces $P_i$ po uvolneni KS:
+	- stav na **RELEASED**
+	- pošli **OK** všem čekajícím procesům ze seznamu
+
+EX:
+
+Krok | Dalsi krok
+:-: | :-:
+1.![[Pasted image 20230831010528.png\|330]] | 2.![[Pasted image 20230831005853.png\|330]]
+3.![[Pasted image 20230831005911.png\|330]] | 4.![[Pasted image 20230831005943.png\|330]]
+5.![[Pasted image 20230831010009.png\|330]] | 6.![[Pasted image 20230831010057.png\|330]]
+7.![[Pasted image 20230831010107.png\|330]] | 8.![[Pasted image 20230831010124.png\|330]]
+
+Analýza:
+- Živost: nejhorší případ – je potřeba počkat než všech $N-1$ pošle OK 
+- Bezpečnost: Dva procesy nemohou současně získat přístup do KS
+
+##### Maekawův algoritmus
+
+#todo 
+
+#### Volba lídra v DS
+
+##### Algoritmy pro volbu lídra a jejich vlastnosti
+
+#### Konsensus v DS
+
+##### FLP teorém
+
+##### Algoritmy pro distribuovaný konsensus.
+
