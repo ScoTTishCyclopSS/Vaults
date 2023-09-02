@@ -484,6 +484,21 @@ f 2/1 4/2 8/4 6/3
 
 ### Bezierovy a B-Spline plochy
 
+#### Bezierovy plochy
+
+Princip: ("two for loops instead of one")
+
+![[Pasted image 20230901180024.png]]
+
+1. Vytvoření mřížky kontrolních bodů: Uspořádejte kontrolní body ze všech křivek do mřížky. Tato mřížka bude definovat řídicí body pro Bézierovu plochu. Například pokud máte čtyři Bézierovy křivky jako řádky a čtyři jako sloupce, budete mít mřížku řídicích bodů 4x4.
+2. Pro křivky ve směru parametru U použijeme na každou z křivek [[B0B39PGR#Adaptivní vykreslování Bézierovy křivky (algoritmus de Casteljau).|deCasteljau algoritmus]] s U = 0,5.
+3. Získáme 4 body - KONTROLNÍ body křivky ve směru parametru V.
+4. Na novou křivku použijeme deCasteljau algoritmus s U = 0,6.
+
+![[Pasted image 20230901174525.png | center | 400]]
+
+![[Pasted image 20230901174759.png | center | 300]]
+
 ---
 
 ### Základní modelovací operace s použitím polygonální a polynomiální reprezentace 3D objektů: blokování, bridge, extrude, loft, rotačníplochy, volné modelování
@@ -579,14 +594,85 @@ Je možné ovládat zakřivení/ostrost povrchu:
 
 ![[Pasted image 20230825110805.png]]
 
+#### Catmull–Clark subdivision surface
+
+**Step 1: Initialize Data Structures**
+
+- Create an empty list to store the new vertices, edges, and faces of the subdivided mesh.
+
+**Step 2: Subdivide Faces**
+
+- For each quad face in the input mesh:
+    1. Calculate the face center (average of the four vertex positions).
+    2. Append the face center to the list of new vertices.
+    3. Split each edge of the face in half (add these edge midpoints to the list of new vertices).
+    4. Create four new faces:
+        - Each new face connects one of the face's original vertices, the midpoint of an adjacent edge, the face center, and the midpoint of the next adjacent edge.
+    5. Append the four new faces to the list of new faces.
+
+**Step 3: Update Original Vertices**
+
+- For each original vertex in the input mesh:
+    1. Calculate the weighted average of the vertex's neighboring face centers and edge midpoints. The weights depend on the valence (number of edges connected to the vertex).
+    2. Update the position of the original vertex to this weighted average.
+
+**Step 4: Update New Vertices**
+
+- For each newly created vertex in the list of new vertices:
+    1. Calculate the weighted average of the adjacent vertices and the neighboring face centers.
+    2. Update the position of the new vertex to this weighted average.
+
+**Step 5: Create New Edges**
+
+- For each edge in the input mesh, if it has not been split in Step 2:
+    1. Calculate the midpoint of the edge.
+    2. Append the midpoint to the list of new vertices.
+    3. Create four new faces:
+        - Each new face connects one of the edge's original endpoints, the midpoint of the edge, the adjacent face center, and the midpoint of the adjacent edge.
+    4. Append the four new faces to the list of new faces.
+
+**Step 6: Assemble Subdivided Mesh**
+
+- Combine the list of new vertices, edges, and faces to form the subdivided mesh.
+
+**Step 7: Normalize Vertex Positions (Optional)**
+
+- If needed, normalize the positions of all vertices in the subdivided mesh to ensure that they lie on the unit sphere (useful for certain applications).
+
 ---
 
 ### Implicitní plochy a jejich reprezentace a využití při modelování
 
+Vyjádřeno pomocí implicitní rovnice: $F(x,y,z) = 0$
+- $F(x,y,z) < 0$ ? -> bod v souřadnicích x,y,z je uvnitř
+- $F(x,y,z) > 0$ ? -> bod v souřadnicích x,y,z je vně
+
+Vlastnosti:
+- V každém bodě víme, zda se nacházíme uvnitř povrchu, na povrchu nebo vně rurálního povrchu
+- Snadné množinové operace (sjednocení, průnik atd.) 
+- Snadno lze vypočítat vzdálenost od povrchu
+
+V modelování nazýváme implicitní plochy **bloby** nebo **metabally**!
+
 #### Blobs
 
+Princip modelovani:
+1. Uvažujme N implicitních ploch
+2. Pro každou implicitní plochu máme funkci $D(r) = 1/r^2$ definující pole vzdáleností, kde $r$ je vzdálenost od implicitní plochy!
+3. Globální pole vzdáleností je pak součtem polí vzdáleností všech implicitních ploch
+4. Povrch je reprezentován izoplochou (isosurface) globálního pole vzdáleností pro danou hodnotu 
+￼
+![[Pasted image 20230901165121.png | center | 300]]
 
 #### Metaballs
+
+Zlepšení blobu! Funguji na základě Gaussovy funkce (Blinn) a její aproximace (Nishimura).
+
+- Každý metaball má svůj poloměr
+- V oblasti, kde mají vliv dvě nebo více metaballů, je vliv metaballů následující: přidán (kladný) / odečten (záporný) k/od globálního pole vzdálenosti!
+- Mimo oblast vlivu je vliv metaball nulový (to urychluje výpočet izoplochy)
+
+![[Pasted image 20230901165627.png|center|250]]
 
 ---
 

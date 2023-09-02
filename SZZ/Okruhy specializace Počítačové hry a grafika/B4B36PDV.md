@@ -1066,15 +1066,13 @@ Je taková vlastnost, že **jakmile je ve výpočtu jednou splněna, zůstává 
 
 ### Vzájemné vyloučení procesů v DS
 
-#### Algoritmy pro vyloučení (mutual exclusion) procesů a jejich vlastnosti 
-
 **Kritická sekce (KS)** je část kódu (všech procesů), u které potřebujeme zaručit, že ji vykonává v každém okamžiku maximálně jeden proces.
 
 Požadavky na algoritmus pro vyloučení procesu:
 - Bezpečnost: nejvýše jeden proces v kritické sekci v okamžiku
 - Živost: každý požadavek na vstup do kritické sekce je časem uspokojen
 
-##### Centralizovaný algoritmus
+#### Centralizovaný algoritmus
 
 - Zvolíme koordinátora (pomocí algoritmu [[#Volba lídra v DS|volby lídra]])
 - Lídr spravuje speciální **token** (umožňuje držiteli vstup do KS) a **frontu požadavků** na vstup do KS
@@ -1094,7 +1092,7 @@ Analýza:
 - Bezpečnost: Maximálně jeden proces v KS
 - Živost: na každý požadavek časem dojde
 
-##### Kruhový algoritmus
+#### Kruhový algoritmus
 
 EZ-PZ algoritmus. $N$ procesů organizovaných do kruhu.
 - Každý proces může poslat zprávu svému následníkovi
@@ -1112,7 +1110,7 @@ Analýza:
 - Bezpečnost: právě jeden **token**
 - Živost: **token** časem oběhnou celý kruh
 
-##### Ricart-Agrawalův algoritmus
+#### Ricart-Agrawalův algoritmus
 
 Nepoužívá token, ale využívá [[#Kauzální závislost/nezávisost|kauzalitu]] (skalární hodiny).
 - Každý proces si udržuje logickou proměnou stav (inicializovanou na RELEASED) a seznam požadavků na vstup
@@ -1142,17 +1140,99 @@ Analýza:
 - Živost: nejhorší případ – je potřeba počkat než všech $N-1$ pošle OK 
 - Bezpečnost: Dva procesy nemohou současně získat přístup do KS
 
-##### Maekawův algoritmus
+#### Maekawův algoritmus
 
 #todo 
 
-#### Volba lídra v DS
+### Volba lídra v DS
 
-##### Algoritmy pro volbu lídra a jejich vlastnosti
+Problem: Ze skupiny procesů **vybrat lídra** (který bude řešit specifické úkoly) a **dát vědět všem procesům** ve skupině, kdo je lídrem.
 
-#### Konsensus v DS
+#### Kruhový algoritmus
+Neco podobneho jako [[#Kruhový algoritmus]] pro vstup do KS.
 
-##### FLP teorém
+- Procesy jsou uspořádané do logického kruhu. 
+- Zprávy jsou posílány dokola kruhu v jednom směru. 
+- Procesy jsou schopné detekovat selhání ostatních procesů
+- 
 
-##### Algoritmy pro distribuovaný konsensus.
+Princip:
+1. $P_i$ pošle po kruhu zprávu ELECTION($i$) obsahující jeho identifikátor
+2. Process zpracová ELECTION($j$):
+	- i < j ? -> přepošle zprávu ELECTION($j$)
+	- i > j ? -> nahradí zprávu za ELECTION($i$) a pošle dál
+	- i = j ? -> $P_i$ je nový koordinátor; odešle zprávu ELECTED($i$)
 
+![[Pasted image 20230901134552.png|center|350]]
+
+3. Process zpracová ELECTED($j$):
+	- Nastaví svou proměnou `elected ≔ j` 
+	- i ≠ j ? -> přepošle zprávu ELECTED($j$)
+
+![[Pasted image 20230901134720.png|center|450]]
+
+Jak řešit selhání?
+
+Předchůdce nebo následovník rádoby lídra $P_k$ detekuje selhání a spustí nové volby:
+- Pokud obdrží zprávu ELECTION(k), ale neobdrží odpovídající zprávu ELECTED(k)
+- Pokud obdrží podruhé zprávu ELECTION(k) nebo ELECTED(k)
+
+#### Algoritmus Bully
+
+Základní princip: proces, který detekoval selhání lídra, vyzve procesy s vyšším ID ve volbách.
+
+Princip:
+1. (detekce selhání, volby!) Proces $P_i$ pošli ELECTION zprávu všem procesům s vyšším ID
+	- Pozor: pokud $P_i$ má nejvyšší ID pošli COORDINATOR zprávu všem procesům s nižšími identifikátory (volby končí)
+
+![[Pasted image 20230901135857.png|center|400]]
+
+2. Proces zpracová ELECTION:
+	- Posyla OK (volby v Rusku haha)
+	- pokud $P_i$ dosud nezahájil volby zahaj volby! (krok 1., rekurzivne volby, aby vsechny procesy se zucastnili, kdo je vys podle ID)
+
+![[Pasted image 20230901135949.png|center|400]]
+
+3. Proces čeká na odpovědi (po vyvolání voleb):
+	- pokud nedorazí žádná odpověď v časovém limitu T -> prohlaš se jako $P_i$ za lídra a pošli COORDINATOR zprávu všem procesům s nižším ID
+	- odpoved je ? -> existuje aktivní proces s vyšším ID, čekej na zprávu COORDINATOR !
+
+![[Pasted image 20230901140030.png|center|400]]
+
+---
+
+### Konsensus v DS
+
+**Konsensus** v DS se týká procesu dosažení shody mezi různými procesy na společné hodnotě nebo rozhodnutí. Cílem je, aby všechny správně fungující procesy v systému dosáhly shody a přijaly stejnou hodnotu.
+
+#### FLP teorém
+
+**FLP teorém** (Fischer, Lynch, Paterson) je teorém, který se týká konsensu v asynchronních DS. Tento teorém tvrdí, že v asynchronním systému, ve kterém existuje alespoň jeden selhávající proces, nelze dosáhnout konsensu v libovolném čase!
+
+Kratce: ==Algoritmus pro konsensus musí garantovat bezpečnost a měl by maximalizovat dostupnost. Obojí garantovat nelze!==
+
+#### RAFT
+
+- **Volba lídra (Leader Election)**
+    1. Výchozí stav systému je, že všichni uzly jsou ve stavu FOLLOWER
+    2. Pokud nějaký uzel nemá lídra, uzel může vyhlásit volbu lídra
+    3. Každý uzel pošle zprávu REQUEST_VOTE ostatním uzlům a žádá je o hlas
+    4. Uzel hlasuje pro sebe a posílá zprávy ostatním uzlům
+    5. Uzel, který obdrží většinu hlasů, se stává lídrem.
+- **Replikace logů (Log Replication)**
+	1. Lídr je zodpovědný za koordinaci replikace logů mezi uzly
+	2. Každý uzel v systému udržuje svůj vlastní log operací
+	3. Když klient pošle lídrovi požadavek na provedení operace, lídr zapisuje tento požadavek do svého logu a replikuje ho na ostatní uzly
+	4. Každý uzel přijímá replikované záznamy a zapisuje je do svého logu
+	5. Jakmile je operace zapsána do většiny logů (tzv. "commit"), lídr odesílá potvrzení klientovi
+- **Zpracování požadavků (Request Processing)**
+	1. Každý uzel může přijímat požadavky od klientů a předávat je lídrovi
+	2. Lídr zpracovává požadavky od klientů a replikuje je na ostatní uzly (krok vys) 
+- **Udržování živosti (Heartbeats)**
+	1. Lídr pravidelně odesílá zprávy "heartbeat" ostatním uzlům, aby ukázal, že je stále aktivní
+	2. Uzly odpovídají na heartbeat zprávy, aby potvrdily svou dostupnost.
+- **Neutralizace starých lídrů**
+    1. Každý uzel v systému pravidelně očekává "heartbeat" od aktuálního lídra
+    2. Pokud uzel neobdrží "heartbeat" od lídra po určitou dobu, považuje lídra za nedostupného nebo selhalého -> VOLBY!!!
+
+![[Pasted image 20230901142344.png]]

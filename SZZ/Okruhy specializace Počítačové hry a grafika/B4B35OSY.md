@@ -411,8 +411,11 @@ Souborový systém **FAT (File Allocation Table)** je starší a jednoduchý sou
 
 ![[Pasted image 20230831213657.png|center|400]]
 
-
 #### Systémy založené na inodech
+
+Základ mnoha UNIXových souborových systémů (např. Linuxový ext2 – ext4). Metadata o jednotlivých souborech jsou uložena v datové struktuře zvané **inode**. 
+
+Položka adresáře obsahuje kromě jména souboru i číslo (pořadí) inode inode obsahuje pevný počet odkazů na datové bloky Z offsetu v souboru lze jednoduše spočítat, který odkaz použít pro přístup k datům (dobré pro náhodný přístup) Několik inode se vejde do 1 bloku (velikost inode bývá např. 128 B)
 
 #### Systémy založené na extendech
 
