@@ -1213,26 +1213,35 @@ Kratce: ==Algoritmus pro konsensus musí garantovat bezpečnost a měl by maxima
 
 #### RAFT
 
-- **Volba lídra (Leader Election)**
-    1. Výchozí stav systému je, že všichni uzly jsou ve stavu FOLLOWER
-    2. Pokud nějaký uzel nemá lídra, uzel může vyhlásit volbu lídra
-    3. Každý uzel pošle zprávu REQUEST_VOTE ostatním uzlům a žádá je o hlas
-    4. Uzel hlasuje pro sebe a posílá zprávy ostatním uzlům
-    5. Uzel, který obdrží většinu hlasů, se stává lídrem.
-- **Replikace logů (Log Replication)**
-	1. Lídr je zodpovědný za koordinaci replikace logů mezi uzly
-	2. Každý uzel v systému udržuje svůj vlastní log operací
-	3. Když klient pošle lídrovi požadavek na provedení operace, lídr zapisuje tento požadavek do svého logu a replikuje ho na ostatní uzly
-	4. Každý uzel přijímá replikované záznamy a zapisuje je do svého logu
-	5. Jakmile je operace zapsána do většiny logů (tzv. "commit"), lídr odesílá potvrzení klientovi
-- **Zpracování požadavků (Request Processing)**
-	1. Každý uzel může přijímat požadavky od klientů a předávat je lídrovi
-	2. Lídr zpracovává požadavky od klientů a replikuje je na ostatní uzly (krok vys) 
+![[Pasted image 20230902104926.png]]
+
 - **Udržování živosti (Heartbeats)**
 	1. Lídr pravidelně odesílá zprávy "heartbeat" ostatním uzlům, aby ukázal, že je stále aktivní
 	2. Uzly odpovídají na heartbeat zprávy, aby potvrdily svou dostupnost.
+
+- **Volba lídra (Leader Election)**
+    1. Výchozí stav systému je, že všichni uzly jsou ve stavu FOLLOWER
+    2. Pokud je lídr nedostupný (mrtvý nebo výpadek sítě), uzel může vyhlásit volbu lídra!
+    3. Každý uzel pošle zprávu REQUEST_VOTE ostatním uzlům a žádá je o hlas
+    4. Uzel hlasuje pro sebe a posílá zprávy ostatním uzlům
+    5. Uzel, který obdrží většinu hlasů, se stává lídrem.
+
 - **Neutralizace starých lídrů**
     1. Každý uzel v systému pravidelně očekává "heartbeat" od aktuálního lídra
     2. Pokud uzel neobdrží "heartbeat" od lídra po určitou dobu, považuje lídra za nedostupného nebo selhalého -> VOLBY!!!
+
+![[Pasted image 20230902105159.png]]
+
+- **Replikace logů (Log Replication)**
+	1. Lídr je zodpovědný za koordinaci replikace logů mezi uzly
+	2. Každý uzel v systému udržuje svůj vlastní log operací
+	3. Když klient pošle lídrovi požadavek na provedení operace, lídr zapisuje tento požadavek do svého logu (append-only) a replikuje ho na ostatní uzly
+	4. Kdykoli je přijat nový požadavek, je do logu přidan s aktuálním číslem TERM
+
+![[Pasted image 20230902105303.png]]
+
+- **Zpracování požadavků (Request Processing)**
+	1. Každý uzel může přijímat požadavky od klientů a předávat je lídrovi
+	2. Lídr zpracovává požadavky od klientů a replikuje je na ostatní uzly (krok vys) 
 
 ![[Pasted image 20230901142344.png]]
