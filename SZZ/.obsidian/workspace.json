@@ -14,7 +14,19 @@
               "type": "markdown",
               "state": {
                 "file": "Okruhy specializace Počítačové hry a grafika/B4B39VGO.md",
-                "mode": "preview",
+                "mode": "source",
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "df6e0665a6212cfa",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "B4B33ALG.md",
+                "mode": "source",
                 "source": true
               }
             }
@@ -31,7 +43,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -97,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Okruhy specializace Počítačové hry a grafika/B4B39VGO.md",
+                "file": "B4B33ALG.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Okruhy specializace Počítačové hry a grafika/B4B39VGO.md",
+                "file": "B4B33ALG.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -137,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Okruhy specializace Počítačové hry a grafika/B4B39VGO.md"
+                "file": "B4B33ALG.md"
               }
             }
           }
@@ -159,28 +172,29 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "f0fce09f55002659",
+  "active": "df6e0665a6212cfa",
   "lastOpenFiles": [
-    "Okruhy specializace Počítačové hry a grafika/B0B39PGR.md",
+    "attachments/Pasted image 20230903100503.png",
+    "B4B33ALG.md",
+    "attachments/Pasted image 20230903100508.png",
+    "attachments/Pasted image 20230903100505.png",
+    "attachments/Pasted image 20230903100458.png",
+    "attachments/Pasted image 20230903095339.png",
     "Okruhy specializace Počítačové hry a grafika/B4B39VGO.md",
+    "attachments/Pasted image 20230903095443.png",
+    "attachments/Pasted image 20230903095359.png",
+    "attachments/Pasted image 20230903095317.png",
+    "attachments/Pasted image 20230903093608.png",
+    "attachments/Pasted image 20230903092620.png",
+    "attachments",
+    "Okruhy specializace Počítačové hry a grafika/B0B39PGR.md",
     "Okruhy specializace Počítačové hry a grafika/B0B01LGR.md",
     "Okruhy specializace Počítačové hry a grafika/B4B35OSY.md",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230902174249.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230902173714.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230902173636.png",
     "Okruhy specializace Počítačové hry a grafika/B4B39IUR.md",
     "Okruhy specializace Počítačové hry a grafika/B4B39HRY.md",
     "Okruhy specializace Počítačové hry a grafika/B4B36PDV.md",
     "Okruhy specializace Počítačové hry a grafika/B4B01DMA.md",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230902105303.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230902105159.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230902104926.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230901180024.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230901174759.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230901174724.png",
-    "Okruhy specializace Počítačové hry a grafika/attachments/Pasted image 20230901174525.png",
     "Okruhy specializace Počítačové hry a grafika/szz_2.rar",
-    "Untitled.md",
     "Okruhy specializace Počítačové hry a grafika/Archive.zip",
     "Untitled",
     "Okruhy specializace Počítačové hry a grafika/attachments",
