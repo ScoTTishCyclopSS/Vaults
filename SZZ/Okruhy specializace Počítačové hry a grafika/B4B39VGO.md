@@ -502,7 +502,7 @@ Princip: ("two for loops instead of one")
 3. Získáme 4 body - KONTROLNÍ body křivky ve směru parametru V.
 4. Na novou křivku použijeme deCasteljau algoritmus s U = 0,6.
 
-![[Pasted image 20230901174525.png | center | 400]]
+![[Pasted image 20230901174525.png ]]
 
 ![[Pasted image 20230901174759.png | center | 300]]
 

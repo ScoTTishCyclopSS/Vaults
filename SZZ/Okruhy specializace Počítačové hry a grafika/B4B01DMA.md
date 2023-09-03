@@ -341,24 +341,43 @@ K získání charakteristických čísel potřebujeme vyřešit rovnici $$p(\lam
 
 EX:
 
-Vyřešte homogenní lineární rekurentní rovnici $a_{n + 2} - 2a_{n + 1} - 3a_{n} = -9n \cdot 2^{n}$, $n \geq 0$
+Vyřešte homogenní lineární rekurentní rovnici $$a_{n + 1} = 4a_{n} - 3a_{n - 1}  + 6 - \frac{1}{2}n \cdot 2^{n}, n \geq 0 | a_1 = 2, a_2 = 11$$
 
-1. Zjistíme charakteristická čísla pro homogenní rovnici (položíme rovno nule):
-	$$\lambda^{2} - 2\lambda - 3 = 0 \rightarrow \lambda_{1} = -1, \lambda_{2} = 3.$$
-2. Tím pádem je homogenním řešením $$a_{h,n} = u \cdot (-1)^n + v \cdot 3^{n}, n \geq 0$$
+1. Pro řešení je nutné danou rovnost alespoň zjednodušit
+	$$a_{n + 1} = 4a_{n} - 3a_{n - 1}  + 6 - \frac{1}{2}n \cdot 2^{n}$$
+	$$a_{n + 1} + 3a_{n - 1} - 4a_{n} = 6 - \frac{1}{2}n \cdot 2^{n}$$
+	$$min = n - 1 → +1, n ≥ 1$$
+	$$a_{n + 2} + 3a_{n} - 4a_{n + 1} = 6 - \frac{1}{2}(n + 1) \cdot 2^{n + 1}$$
+	$$a_{n + 2} - 4a_{n + 1} + 3a_{n} = 6 - (n + 1) \cdot 2^{n}$$
+
+2. Nejprve vyřešme homogenní část naší rovnosti (položíme rovno nule):
+	$$a_{n + 2} - 4a_{n + 1} + 3a_{n} = 0$$
+	Získejme charakteristický polynom:
+	$$\lambda^{2} - 4\lambda + 3 = 0 \rightarrow \lambda_{1} = 3, \lambda_{2} = 1$$
+	Tím pádem homogenním řešením je (kde $u$ a $v$ jsou vektory):
+	$$a_{h,n} = u \cdot 3^n + v, n \geq 1$$
+
 3. Partikulární řešení zjistíme tak, že odhadneme pravou stranu přes polynom
-	- Protože je na pravé straně $-9n \cdot 2^{n}$, odhadneme lineární polynom $a_{n} =(An + B) \cdot 2^{n}$
-	- Ten dosadíme do levé strany za $a_{n}$:
-	  $$(A(n + 2) + B) \cdot 2^{n + 2} - 2(A(n + 1) + B) \cdot 2^{n + 1} - 3(An + B) \cdot 2^{n} =$$
-	  $$4(An + 2A + B) \cdot 2^{n} - 4(An + A + B) \cdot 2^{n} - 3(An + B) \cdot 2^{n} =$$
-	  $$\left[(-3A)n + (4A - 3B)\right] \cdot 2^{n}$$.
-	- Když výsledný výraz položíme roven $-9n \cdot 2^{n}$, dostáváme soustavu lineárních rovnic:
-	  $$-3A = -9$$
-	  $$4A - 3B = 0$$
-	- Jejímž řešením je $A = 3, B = 4$
-	- Partikulární řešení je tedy $a_{p, n} = (3n + 4) \cdot 2^{n}, n \geq 0$.
-4. Zkombinováním $a_{n} = a_{p,n} + a_{h, n}$ získáme obecné řešení:$$a_{n} = (3n + 4) \cdot 2^{n} + u \cdot (-1)^{n} + v \cdot 3^{n}, n \geq 0$$.
+	$$6 - (n + 1) \cdot 2^{n} → A - (n + B)\cdot2^n$$
+	Polynom dosadíme do levé strany za $a_{n}$!
+	(levou stranu raději rozdělím na několik dílčích částí, označím je $L_i$)
+	$$L_1 = [A - (n + 2 + B)2^{n+2}] = [A - (4n + 8 + 4B)2^n]$$
+	$$L_2 = [A - (n + 1 + B)2^{n+1}] = [A - (2n + 4 + 2B)2^n]$$
+	$$L_3 = [A - (n + B)2^{n}]$$
+	$$L = L_1 - 4\cdot L_2 + 3\cdot L_3$$
+	$$a_{p,n} = (-3n - 1)\cdot 2^n$$
 
-#todo vektory, baze?
+4. Zkombinováním $a_{n} = a_{p,n} + a_{h, n}$ získáme obecné řešení:
+	$$a_{n} = (-3n - 1)\cdot 2^n + 3^nu + v$$
+
+5. Ziskame vektory $u$ a $v$ pomoci kroku $a_1$ a $a_2$
+	$$a_1: 2 = (-3 - 1)\cdot 2 + 3u + v = 3u + v - 8$$
+	$$a_1: 10 = 3u + v$$
+	$$v = 10 - 3u$$
+	$$a_2: 11 = (-6 - 1)\cdot 4 + 9u + v = 9u + v - 28$$
+	$$a_2: 39 = 9u + v$$
+	$$39 = 9u + 10 - 3u$$
+	$$29 = 6u$$
+	$$u = ..., v = ...$$
 
 ---

@@ -411,13 +411,27 @@ Souborový systém **FAT (File Allocation Table)** je starší a jednoduchý sou
 
 ![[Pasted image 20230831213657.png|center|400]]
 
-#### Systémy založené na inodech
+#### Systémy založené na inodech (Ext2-3)
 
-Základ mnoha UNIXových souborových systémů (např. Linuxový ext2 – ext4). Metadata o jednotlivých souborech jsou uložena v datové struktuře zvané **inode**. 
+**Inode** je datová struktura v souborovém systému, která obsahuje informace o souboru nebo adresáři (metadata), kromě jeho jména a aktuálního obsahu.
+- Každý soubor nebo adresář má svůj vlastní inode!
 
-Položka adresáře obsahuje kromě jména souboru i číslo (pořadí) inode inode obsahuje pevný počet odkazů na datové bloky Z offsetu v souboru lze jednoduše spočítat, který odkaz použít pro přístup k datům (dobré pro náhodný přístup) Několik inode se vejde do 1 bloku (velikost inode bývá např. 128 B)
+V souborových systémech založených na inodech, jako je ext2, ext3 je tabulka inodů předem alokována na disku, což umožňuje rychlý přístup k metadatům souboru. Adresáře v těchto systémech obsahují pouze odkazy na inody a jména souborů, což umožňuje efektivní přejmenování a přesun souborů.
 
-#### Systémy založené na extendech
+![[Pasted image 20230902173636.png]]
+
+#### Systémy založené na extendech(Ext-4)
+
+**Extent** je souvislý blok diskového prostoru, který je alokován pro ukládání dat souboru.
+Místo toho, aby sledoval každý jednotlivý blok, který tvoří soubor, souborový systém založený na extenzích sleduje pouze začátek a délku každého extentu.
+
+Souborové systémy založené na extenzích, jako je ext4 nebo XFS, používají extenty k zefektivnění alokace diskového prostoru, zejména pro velké soubory.
+Použitím extenzí může souborový systém snížit množství metadat potřebných k sledování umístění souboru na disku.
+Extenty také pomáhají snižovat fragmentaci souborů, protože se snaží alokovat souvislé bloky pro soubory, kdykoli je to možné.
+
+![[Pasted image 20230902174249.png]]
+
+---
 
 ### Žurnálování (Logs)
 
