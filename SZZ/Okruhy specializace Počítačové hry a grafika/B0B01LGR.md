@@ -1,7 +1,9 @@
 ## Obsah:
-1. [[#1. Výroková logika|Výroková logika]]
-2. [[#2. Predikátová logika|Predikátová logika]]
-3. [[#3. Základní pojmy a definice teorie grafů|Grafy a vtipné pojmy, které si nepamatuji (kurva, jich je hodně)]]
+- [[#1. Výroková logika|Výroková logika]]
+- [[#2. Predikátová logika|Predikátová logika]]
+- [[#3. Základní pojmy a definice teorie grafů|Grafy a vtipné pojmy, které si nepamatuji]]
+
+---
 
 ## 1. Výroková logika
 
@@ -32,6 +34,8 @@ Spojky označují následující operace:
 0 | 1 | 0 | 1 | 1 | 0 | 1 | 1
 1 | 0 | 0 | 1 | 0 | 0 | 1 | 1
 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0
+
+%% Separator %%
 
 α|¬α
 :-: | :-:
@@ -691,6 +695,7 @@ Popis | Graficky
 --- | :-: 
 Máme daný orientovaný graf, dokonce acyklický. Vytvoříme pro něj posloupnost vrcholů od 0 do 8 a pro každý z nich označíme počet vstupních hran. | ![[Pasted image 20230822124036.png\|250]]
 
+%% Separator %%
 
 V | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-:
@@ -701,54 +706,79 @@ Krok | Graficky
 --- | :-:
 1 - Postup z videa zde zopakujeme, a přestože bychom mohli klidně začít ve vrcholu **0**, zvolíme **6**. Poté provedeme opravy v tabulce pro vrcholy **3**, **7**, **8**. | ![[Pasted image 20230822120931.png\|250]]
 
+%% Separator %%
+
 V | 0 | 1 | 2 | 3 | 4 | 5 | ==*6*== | 7 | 8 | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-:
 **d<sub>in</sub>(V)** | | \| \| | \| \| | \| | \| \| | \| | ✓ | | | { 6 }
 
+%% Separator %%
 
 Krok | Graficky
 --- | :-:
 2 - Skončeme s touto částí grafu, a proto vybereme prázdné vrcholy **7** a **8**, pak je také označíme v očíslování. | ![[Pasted image 20230822121107.png\|250]]
 
+%% Separator %%
+
 V | 0 | 1 | 2 | 3 | 4 | 5 | 6 | ==*7*== | ==*8*== | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: 
 **d<sub>in</sub>(V)** |  | \| \| | \| \| | \| | \| \| | \| | ✓ | ✓ | ✓ | { 6, 7, 8 }
+
+%% Separator %%
 
 Krok | Graficky
 --- | :-:
 3 - Podle tabulky je dalším vrcholem **0**, kde již opravíme údaje pro další 4 vrcholy: **1**, **2**, **3**, **4**. | ![[Pasted image 20230822121620.png\|250]]
 
+%% Separator %%
+
 V | ==*0*== | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: 
 **d<sub>in</sub>(V)** | ✓ | \| | \| |  | \| | \| | ✓ | ✓ | ✓ | { 6, 7, 8, 0 }
+
+%% Separator %%
 
 Krok | Graficky
 --- | :-:
 4 - Další volný vrchol je **3**, ale musíme opravit i spojení s **2**. | ![[Pasted image 20230822122112.png\|250]]
 
+%% Separator %%
+
 V | 0 | 1 | 2 | ==*3*== | 4 | 5 | 6 | 7 | 8 | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-:
 **d<sub>in</sub>(V)** | ✓ | \| | | ✓ | \| | \| | ✓ | ✓ | ✓ | { 6, 7, 8, 0, 3 }
+
+%% Separator %%
 
 Krok | Graficky
 --- | :-:
 5 - V předchozím kroku jsme uvolnili vrchol **2**, proto jej označíme jako další, který uvolní **1** a **5** najednou. | ![[Pasted image 20230822122432.png\|250]]
 
+%% Separator %%
+
 V | 0 | 1 | ==*2*== | 3 | 4 | 5 | 6 | 7 | 8 | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-:
 **d<sub>in</sub>(V)** | ✓ | | ✓ | ✓ | \| | | ✓ | ✓ | ✓ | { 6, 7, 8, 0, 3, 2 }
+
+%% Separator %%
 
 Krok | Graficky
 --- | :-:
 6 - Nakonec odstraníme všechny hrany - přejdeme na **1** a uvolníme **4**. | ![[Pasted image 20230822122644.png\|250]]
 
+%% Separator %%
+
 V | 0 | ==*1*== | 2 | 3 | 4 | 5 | 6 | 7 | 8 | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-:
 **d<sub>in</sub>(V)** | ✓ | ✓ | ✓ | ✓ |  |  | ✓ | ✓ | ✓ | { 6, 7, 8, 0, 3, 2, 1 }
 
+%% Separator %%
+
 Krok | Graficky
 --- | :-:
 7 - Přidáme **5** na konec jako poslední volný vrchol. | ![[Pasted image 20230822122728.png\|250]]
+
+%% Separator %%
 
 V | 0 | 1 | 2 | 3 | ==*4*== | ==*5*== | 6 | 7 | 8 | Očíslování
 :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-:

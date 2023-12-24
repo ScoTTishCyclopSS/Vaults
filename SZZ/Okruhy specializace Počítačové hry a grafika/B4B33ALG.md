@@ -1,17 +1,19 @@
 ## Obsáh:
-1. Řád růstu funkcí, asymptotická složitost algoritmu.
-2. Rekurze, Stromy, binární stromy, prohledávání s návratem.
-3. Fronta, zásobník, průchod stromem/grafem do šířky/hloubky.
-4. Binární vyhledávací stromy, AVL a B- stromy
-5. Algoritmy řazení: Insert Sort, Selection Sort, Bubble Sort, QuickSort Merge Sort, Halda, Heap Sort, Radix sort, Counting Sort.
-6. Dynamické programování, struktura optimálního řešení, odstranění rekurze. Nejdelší společná podposloupnost, optimální násobení matic, problém batohu.
-7. Rozptylovací tabulky (Hashing), hashovací funkce, řešení kolizí, otevřené a zřetězené tabulky, double hashing, srůstající tabulky, univerzální hashování.
+- [[#1. Rád růstu funkcí, asymptotická složitost algoritmu|Rád růstu funkcí, asymptotická složitost algoritmu]]
+- [[#2. Rekurze, Stromy, binární stromy, prohledávání s návratem|Rekurze, Stromy, binární stromy, prohledávání s návratem]]
+- [[#3. Fronta, zásobník, průchod stromem/grafem do sirky/hloubky|Fronta, zásobník, průchod stromem/grafem do sirky/hloubky]]
+- [[#4. Binární vyhledávací stromy, AVL a B- stromy|Binární vyhledávací stromy, AVL a B- stromy]]
+- [[#5. Algoritmy řazení|Algoritmy řazení]]
+- [[#6. Dynamické programování (opt. řešení, odstranění rekurze). Nejdelší společná podposloupnost, optimální násobení matic, problém batohu|Dynamické programování (opt. řešení, odstranění rekurze). Nejdelší společná podposloupnost, optimální násobení matic, problém batohu]]
+- [[#7. Rozptylovací tabulky (Hashing), hashovaci funkce, řešení kolizí, otevřené a zřetězené tabulky, double hashing, srůstající tabulky, univerzální hashování|Rozptylovací tabulky (Hashing), hashovaci funkce, řešení kolizí, otevřené a zřetězené tabulky, double hashing, srůstající tabulky, univerzální hashování]]
 
-## 1. Řád růstu funkcí, asymptotická složitost algoritmu.
+---
+
+## 1. Rád růstu funkcí, asymptotická složitost algoritmu
 
 ![[Pasted image 20230903090240.png]]
 
-## 2. Rekurze, Stromy, binární stromy, prohledávání s návratem.
+## 2. Rekurze, Stromy, binární stromy, prohledávání s návratem
 
 
 ### Rekurze
@@ -91,7 +93,7 @@ N-queens problem: umístěte n-králů na šachovnici tak, aby se navzájem nepo
 
 ---
 
-## 3. Fronta, zásobník, průchod stromem/grafem do šířky/hloubky.
+## 3. Fronta, zásobník, průchod stromem/grafem do sirky/hloubky
 
 ### Fronta
 
@@ -182,7 +184,7 @@ Algoritmus DFS funguje následovně:
 
 ![[Pasted image 20230904004908.png | center | 500]]
 
-## 4. Binární vyhledávací stromy, AVL a B- stromy
+## 4. Binární vyhledávací stromy, AVL a B- stromy
 
 ### BST (Binary Search Tree)
 
@@ -260,7 +262,7 @@ Vyhledávání | Vkládání | Vymazání
 :-: | :-: | :-:
 $O(k\cdot log(kn))$ | $O(k\cdot log(kn))$ | $O(k\cdot log(kn))$
 
-## 5. Algoritmy řazení: Insert Sort, Selection Sort, Bubble Sort, QuickSort Merge Sort, Halda, Heap Sort, Radix sort, Counting Sort.
+## 5. Algoritmy řazení
 
 ### Selection sort
 
@@ -403,7 +405,7 @@ EX: \[12==1==, 43==2==, 56==4==, 2==3==, ==1==, 4==5==, 78==8==]
 
 ---
 
-## 6. Dynamické programování, struktura optimálního řešení, odstranění rekurze. Nejdelší společná podposloupnost, optimální násobení matic, problém batohu.
+## 6. Dynamické programování (opt. řešení, odstranění rekurze). Nejdelší společná podposloupnost, optimální násobení matic, problém batohu
 
 **Dynamické programování** je metoda pro efektivní řešení určitých optimalizačních úloh. Lze jej použít pro řešení úloh, které lze rozdělit na podúlohy, jejichž optimální řešení lze použít při řešení původní úlohy. Princip dynamického programování spočívá v rekurzivním dělení úlohy na menší části, které se řeší ve vhodném pořadí, jejich výsledky se zaznamenávají a jsou použity pro řešení složitějších podúloh včetně původní úlohy.
 
@@ -474,7 +476,7 @@ Protože konečný výsledek lze získat dvěma různými způsoby, zaznamená s
 
 ---
 
-## 7. Rozptylovací tabulky (Hashing), hashovací funkce, řešení kolizí, otevřené a zřetězené tabulky, double hashing, srůstající tabulky, univerzální hashování.
+## 7. Rozptylovací tabulky (Hashing), hashovaci funkce, řešení kolizí, otevřené a zřetězené tabulky, double hashing, srůstající tabulky, univerzální hashování
 
 **Hašovací tabulka** je vyhledávací datová struktura, která asociuje hašovací klíče s odpovídajícími hodnotami. Hodnota klíče je spočtena z obsahu položky pomocí nějaké hašovací funkce.
 

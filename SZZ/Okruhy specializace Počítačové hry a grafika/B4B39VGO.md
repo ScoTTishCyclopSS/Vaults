@@ -1,10 +1,10 @@
 ## Obsah
-1. [[#1. Vnímání barev|Vnímání barev]]
-2. [[#2. Barevné modely|Barevné modely]]
-3. [[#3. Rastrová grafika|Rastrová grafika]]
-4. [[#4. Vektorová grafika a reprezentace 2D objektů|Vektorová grafika a reprezentace 2D objektů]]
-5. [[#5. Reprezentace 3D objektů a principy 3D modelování|Reprezentace 3D objektů a principy 3D modelování]]
-6. [[#6. Principy mapování textur|Principy mapování textur]]
+- [[#1. Vnímání barev|Vnímání barev]]
+- [[#2. Barevné modely|Barevné modely]]
+- [[#3. Rastrová grafika|Rastrová grafika]]
+- [[#4. Vektorová grafika a reprezentace 2D objektů|Vektorová grafika a reprezentace 2D objektů]]
+- [[#5. Reprezentace 3D objektů a principy 3D modelování|Reprezentace 3D objektů a principy 3D modelování]]
+- [[#6. Principy mapování textur|Principy mapování textur]]
 
 
 ## 1. Vnímání barev
@@ -38,7 +38,7 @@ Výsledkem pokusu jsou funkce shody barev. Říká, jakou intenzitu testovacích
 
 ### Srovnávací funkce (CIE RGB)
 
-#todo info
+#todo 
 
 ---
 
@@ -197,7 +197,7 @@ Je podobný Polotónování proces, který přidává šum nebo vzory pro efekti
 
 Popis | Obrazek
 --- | :-:
-<ul><li>každý pixel přímo ukládá barevnou informaci pomocí hodnot RGB nebo CMYK</li><li>umožňuje širokou škálu barev a plynulé přechody</li><li>vyžaduje více paměti pro uložení barevných informací pro každý pixel</li></ul> | #todo obrazek
+<ul><li>každý pixel přímo ukládá barevnou informaci pomocí hodnot RGB nebo CMYK</li><li>umožňuje širokou škálu barev a plynulé přechody</li><li>vyžaduje více paměti pro uložení barevných informací pro každý pixel</li></ul> | #todo
 
 #### Indexovaná reprezentace barev
 
@@ -285,8 +285,6 @@ Dochází ke ztrátě informací, z komprimovaného obrazu nelze rekonstruovat p
 ---
 
 ### Základní formáty GIF, PNG a JPEG a jejich vlastnosti
-
-#todo malo info?
 
 #### GIF (Graphics Interchange Format)
 
@@ -390,8 +388,6 @@ Orientace polygonu (pomáhají určit orientaci normal):
 #### Datové struktury
 
 ##### List vrcholů a stěn
-
-#todo vic data?
 
 - máme seznam vrcholů, kde každý vrchol je reprezentován pouze jednou
 - nemáme informaci o hranách

@@ -34,6 +34,8 @@
 	- Virtualizace stránkovacích tabulek.
 	- Hardwarově asistovaná virtualizace.
 
+---
+
 ## 1. Systémová volání
 
 ### Ochrana paměti jádra
@@ -160,8 +162,6 @@ Proces krok-za-krokem:
 [[B4B36PDV#Procesy a vlákna]]
 
 #### Vlákno
-
-**Vlákno** - 
 
 Vlastnosti:
 - Vlákna jsou vytvářeny v rámci procesu a viditelný uvnitř procesu
@@ -436,8 +436,14 @@ Extenty také pomáhají snižovat fragmentaci souborů, protože se snaží alo
 
 Základní princip, kdy mohou vzniknout v souborovém systému chyby, jaké jsou úrovně žurnálování a jeho nevýhody.
 
+#todo 
+
 ---
 
 ## 6. Bezpečnost
 
+#todo 
+
 ## 7. Virtualizace
+
+#todo 

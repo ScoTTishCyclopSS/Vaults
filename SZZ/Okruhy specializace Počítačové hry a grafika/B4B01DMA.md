@@ -1,11 +1,13 @@
 ## Obsah
-1. Vlastnosti celých čı́sel
-2. Euklidův algoritmus
-3. Binárnı́ relace
-4. Matematická indukce
-5. Rekurzivnı́ vztahy
+- [[#1. Vlastnosti celých čísel|Vlastnosti celých čísel]]
+- [[#2. Euklidův algoritmus|Euklidův algoritmus]]
+- [[#3. Binární relace|Binární relace]]
+- [[#4. Matematická indukce|Matematická indukce]]
+- [[#5. Rekurzivní vztahy|Rekurzivní vztahy]]
 
-## 1. Vlastnosti celých čı́sel
+---
+
+## 1. Vlastnosti celých čísel
 
 ### Dělitelnost: definice, základní vlastnosti (tranzitivita a podobně), gcd(a,b)
 
@@ -158,7 +160,7 @@ q| gcd(-,-) | A | B | Krok
 
 ---
 
-## 2. Euklidův algoritmus
+## 2. Euklidův algoritmus
 
 Lze jím vypočítat **největšího společného dělitele (gcd)** dvou přirozených čísel!
 
@@ -204,7 +206,7 @@ q| gcd(-,-) | A | B | Bezout.
 
 ---
 
-## 3. Binárnı́ relace
+## 3. Binární relace
 
 ### Co znamená prakticky a jak se definuje matematicky
 
@@ -244,13 +246,13 @@ Popis | Obrazek
 --- | :-:
 R je **tranzitivní**, jestliže pro všechna $a, b, c ∈ A$ platí $(aRb ∧ bRc) ⇒ aRc$. <br>Jinymy slovy: pokud jsou (a, b) a (b, c) v relaci, pak musí být i (a, c). <br>např. "A je vyšší než B, B je vyšší než C ⇒ A je vyšší než C"<br>Mnozina:$M = \{(1, 2), (3, 2), (4, 2), (4, 3), (4, 4)\}$ **(4, 3), (3, 2) -> (4, 2)** | ![[Pasted image 20230826164807.png\|150]]
 
-#### Ekvivalence (RST)
+#### Ekvivalence (RST) = Reflexivita + Symetrie + Tranzitivita
 
-#### Castecne Usporadani (RAT)
+#### Castecne Usporadani (RAT) = Reflexivita + Antisimetrie + Tranzitivita
 
 ---
 
-## 4. Indukce
+## 4. Matematická indukce
 
 ==Slabý a silný princip matematické indukce jsou ekvivalentní!==
 
@@ -333,7 +335,7 @@ Rozdíl v matematickém zápisu mezi slabou a silnou indukcí může být opravd
 
 ---
 
-## 5. Rekurzivnı́ vztahy
+## 5. Rekurzivní vztahy
 
 ### Lineární rekurentní rovnice
 

@@ -16,6 +16,8 @@
 - Volba lídra v DS. Algoritmy pro volbu lídra a jejich vlastnosti. 
 - Konsensus v DS. FLP teorém. Algoritmy pro distribuovaný konsensus.
 
+---
+
 ## 1. Paralelní systémy/výpočty
 
 ### Hardwarová podpora pro paralelní výpočty
@@ -889,9 +891,8 @@ NTP servery jsou uspořádány do stromu, kde:
 
 Představme si následující situaci: Potomek (nějaký uzel) chce synchronizovat čas s jedním ze svých rodičů. V takovém případě je třeba provést následující kroky:
 
-1. Potomek odešle zprávu svému rodiči $Start$
-
-#todo...
+1. Potomek odešle zprávu svému rodiči $Start$ ...
+2. #todo 
 
 ![[Pasted image 20230829173829.png]]
 

@@ -7,7 +7,7 @@
 
 ---
 
-## 1. Rastrový zobrazovací řetězec, <br>jeho fixní a programovatelné bloky
+## 1. Rastrový zobrazovací řetězec, jeho fixní a programovatelné bloky
 ### Logické bloky v zobrazovacím řetězci a jejich funkci.
 **Vertex Shader (nebo VS)** - program v GLSL používaný ke zpracování každého vrcholu
 - VS přijímá souřadnice a atributy jednoho vrcholu + uniformy
@@ -162,7 +162,7 @@ Typy filtrování | Popis | Demo
 <span class="term">GL_NEAREST</span> | prvek textury, který je nejblíže zadaným souřadnicím textury (rychlý, aliasing) | ![[Pasted image 20230809184418.png]]
 <span class="term">GL_LINEAR</span> | vážený průměr textury 2x2 prvky, které jsou nejblíže k zadané souřadnice textury ( pomalejší, ale plynulé) | ![[Pasted image 20230809184428.png]]
 
-Kombinace
+Kombinace:
 
 Metody filtrování | Popis 
 ----- | ----- 
@@ -173,8 +173,6 @@ Metody filtrování | Popis
 
 ![[Pasted image 20230806180105.png| center |500]]
 
-
----
 #### Mapa prostředí
 Než si rozebereme použití mapování prostředí, musíme si rozebrat metody mapování textur.
 
@@ -317,8 +315,6 @@ V homogenních souřadnicích je bod v prostoru určen 4 čísly <span class="ma
 
 **Závěr**: Kartézské souřadnice jsou obvykle jen první tří homogenní souřadnice dělené čtvrtým. Pokud je tedy čtvrtá souřadnice 1, jsou homogenní souřadnice stejné jako kartézské.
 
----
-
 #### Lineární transformace
 
 Třídu lineárních transformací lze popsat pomocí matic - ve 3D prostoru matice 3x3. Je to proto, že lineární transformaci lze přesně specifikovat tak, že nám řekne její vliv na bázové vektory.
@@ -333,8 +329,6 @@ Matice | Znaceni | Pouziti
 ==*Změna měřítka může být symetrické (stejná změna ve všech osách) nebo asymetrické (různá změna pro každou osu).*==
 
 Jakékoli rotace ve 3D lze dosáhnout pomocí sekvence otáčení kolem os x, y a z (např. Eulerovy úhly). ==*Rotace ve 3D nejsou komutativní → pořadí rotace je proto důležité*== ([[#<font color= 85DCB>Gimbal lock</font>|Gimbal lock]] risk!).
-
----
 
 #### Affinní
 Libovolnou kombinaci posunu, rotace, změny měřítka/odrazu a smyku lze kombinovat v jediné afinní transformační matici 4x4!
@@ -429,8 +423,6 @@ Matice | Operace nad vektorem
    (kdybychom meli 3, tak range by se zmenil na \[-1.5, 1.5])
 - Translace zahova centralizace projekce podle os (o kolik posunut objekt do near plane)
 
----
-
 #### Matice perspektivního promítání
 **(Perspective projection deforms the box to frustum)**
 ![|400](https://lh5.googleusercontent.com/epFetYVWKXN9DaRmOFdZYeG6yahgDj35arIPw7bF5P8eUwMgv7K2PfVsyrPORXYS3S7nz2SB_lb2SQ3pFe6Aze1xy18lnBhfrL5hNc_geewCkbGgJEvHRrEdXjXcfu4PTKaUckN2qiHMdjDIpouvp7U)
@@ -464,8 +456,6 @@ Je plynulý přechod objektu z jedné polohy do druhé ve 3D prostoru. V tomto p
 
 ![[Pasted image 20230808224735.png|center|400]]
 
----
-
 #### Interpolation of Rotation
 **Kvaternion** je matematická konstrukce používaná k vyjádření otáčení a orientace v trojrozměrném prostoru <span class="maths">(q0, q1, q2, q3)</span>, kde  <span class="maths">q1, q2, q3</span>  → vektory standartni bazi (E3, imaginarni cast) představuje osu otáčení <span class="maths">q0</span> →  skalar (= (q0, q), q – vektor), určuje velikost otáčení kolem této osy.
 
@@ -474,7 +464,7 @@ Je plynulý přechod objektu z jedné polohy do druhé ve 3D prostoru. V tomto p
 **Poznamka**: Cisty Quaternion (pure, ryze imaginarni) – <font color=#d7992>(0, q1, q2, q3)</font> oznaci vektor <font color=#d7992>(q1, q2, q3)</font>.
 “Vektor je cisty Quaternion, ve kterem realna cast je nulova.”
 
-**LERP a SLERP**: 
+#### LERP a SLERP 
 
 ![[Pasted image 20230903152940.png]]
 
@@ -489,8 +479,6 @@ Před přímou analýzou všech složek osvětlení je nutné je označit. Na ob
 
 K výpočtu osvětlení se také běžně používají parametry materiálu (např. textury, jako je roughness nebo metalness). Princip je stejný, ale v tomto případě se vlastnosti pro konkrétní vrchol vypočítají s ohledem na souřadnice textury.
 
-Compute color in point (in camera space) separate rgb, separate components (ambient, diffuse, specular) ▪ in vertex • Use vectors 𝑛, Ԧ 𝑙 = (light pos−vertex pos), 𝑟 Ԧ , 𝑣 Ԧ = −vertex pos • Compute color – then interpolate over the triangle ▪ in fragment • Interpolate 𝑛, vertex 𝑝𝑜𝑠 in camera space • normalize(𝑛), • compute Ԧ 𝑙 = (light pos−vertex 𝑝𝑜𝑠), 𝑟 Ԧ , 𝑣 Ԧ = −vertex pos • Compute color in fragment
-
 ---
 
 ### Normálový vektor a jeho použití při výpočtu osvětlení v bodě.
@@ -498,6 +486,8 @@ Compute color in point (in camera space) separate rgb, separate components (ambi
 Hlavním případem použití pro normály jsou výpočty osvětlení, kde musíte určit úhel (prakticky často kosinus) mezi normálou v daném bodě povrchu a směrem ke zdroji světla nebo ke kameře. 
 
 ==Podrobné použití normálového vektoru bude popsáno v části [[#Phongův osvětlovací model, vzorce jednotlivých složek.]]==
+
+---
 
 ### Výpočet normály trojúhelníka.
 
@@ -542,7 +532,6 @@ Interpolované normály na povrchu polygonu by nepředstavovaly plynulý přecho
 
 ---
 
-
 ### Proč stačí kanály RGB (metamerism).
 **Metamerism (neboli metamerie)** je jev, kdy se barva dvou objektů jeví pod určitým světelným zdrojem stejná, ale ve skutečnosti mají odlišné spektrální rozložení.
 
@@ -556,9 +545,10 @@ V případě kanálů RGB se využívá metamerism, protože lidské oko má tř
 
 ---
 
-
 ### Metody stínování.
+
 **Shading models** - definují, jak se vypočítávají odstíny (shades) barev pro pixely.
+
 #### Flat
 Popis | Demo
 ----- | ----- 
@@ -583,7 +573,6 @@ Osvětlení (barva) počítané na vrchol, interpolace barev mezi vrcholy, rychl
 - protože se osvětlení počítá pouze ve vrcholech, mohou být nepřesnosti (hlavně u zrcadlových světel na velkých trojúhelnících) velmi viditelné
  - T-spoje se sousedními polygony mohou někdy vést k vizuálním anomáliím
  - spekulární světla se při plochém stínování vykreslují špatně
-
 
 #### Phong
 Popis | Demo
@@ -646,15 +635,18 @@ Graficky | Výpočet
 Popis | Demo
 ----- | ----- 
 Světlo vychází rovnoměrně z daného směru, jako by vycházelo z plochy nekonečné velikosti a vzdálenosti od osvětlovaného objektu (e.g. slunce). | ![[Pasted image 20230810173339.png\|150]]
+
 **Vlastností**:
 - má směr
 - počítá ambient, diffuse a specular složky
 - ve Phongu: <span class="maths">light = ambient<sub>reflect</sub> + diffuse<sub>reflect</sub> + specular<sub>reflect</sub></span>
 
 #### Point 
+
 Popis | Demo
 ----- | ----- 
 Světlo vychází z jednoho bodu a šíří se do všech směrů. | ![[Pasted image 20230810173303.png\|200]]
+
 **Vlastností**:
 - má pozicí
 - počítá ambient, diffuse a specular složky
@@ -664,9 +656,11 @@ Světlo vychází z jednoho bodu a šíří se do všech směrů. | ![[Pasted im
 - ve Phongu: <span class="maths">light = (ambient<sub>reflect</sub> + diffuse<sub>reflect</sub> + specular<sub>reflect</sub>) × attenuationFactor</span>
 
 #### Spot (reflector)
+
 Popis | Demo
 ----- | ----- 
 Světlo vychází z jednoho bodu a šíří se ven v kuželu o variabilním průměru a délce. | ![[Pasted image 20230810172212.png\|200]]
+
 **Vlastností**:
 - má směr (<span class="term">GL_SPOT_DIRECTION</span>), pozicí, ořezávání (<span class="term">GL_SPOT_CUTOFF</span>)
 - počítá ambient, diffuse a specular složky
@@ -848,10 +842,14 @@ Stupeň | Demo
 <span class="term">C<sup>0</sup> Positional continuity</span> | ![[Pasted image 20230813154113.png\|center]]
 **Сhování** | Při první derivaci tento typ spojení nezachovává délku výsledného tečného vektoru, takže se při interpolaci křivky mohou objevit skoky (na grafu rychlosti je vidět, že všechny úsečky první derivace nejsou nijak spojeny). ==Začátek dalšího segmentu křivky je však stejný jako konec předchozího.==
 
+%% Separator %%
+
 Stupeň | Demo
 --- | --- 
 <span class="term">C<sup>1</sup> Velocity continuity</span> | ![[Pasted image 20230813155840.png\|center]]
 **Сhování** | Jak lze tedy předchozí chybu upravit? Mirror tangens points - ==Rychlost na konci bodu A se musí rovnat rychlosti na začátku bodu B!== Jinými slovy - 1. derivace na konci bodu A se musí rovnat 1. derivaci začátku bodu B. Proto lze říci, že toto spojení zaručuje tečnu, ale ne hladké vázaní.
+
+%% Separator %%
 
 Stupeň | Demo
 --- | --- 
@@ -868,10 +866,14 @@ Stupeň | Сhování
 --- | --- 
 <span class="term">G<sup>0</sup> Positional continuity</span> |  Tento typ spojení má tytéž vlastnosti jako C<sup>0</sup>
 
+%% Separator %%
+
 Stupeň | Demo
 --- | --- 
 <span class="term">G<sup>1</sup> Tangent continuity</span> | ![[Pasted image 20230813164724.png\|center]]
 **Сhování** | Z tohoto spojení vyplývá, že tečné vektory v uzlovém bodě jsou zarovnány (ale nejsou si rovny!).<br>Takže křivky mají stejný směr tečny a směr pohybu, ale rychlost je jiná. ![\|300](https://lh3.googleusercontent.com/R70zzRaOrkfXIlhzP7JpeQbLaBC05X6miN2grwmsQiamL09G7g1srtBM5qGFVkd5Bl_O0db0UYeTsubodICiDZ3FUZITBioRDcOxdg5j0iuNWLSSQpKs90ZMssqPlq1bq8F6HMj90MrmR0PuUGqNQ3Q)
+
+%% Separator %%
 
 Stupeň | Demo
 --- | --- 
