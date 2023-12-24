@@ -31,7 +31,7 @@ Uvažme cyklus:
 for (i = 0; i < 1000; i++) 
 	z[i] = x[i] + y[i];
 ~~~
-jedna jednotka může počítat z\[0], druhá z\[1] atd.
+jedna jednotka ALU může počítat z\[0], druhá z\[1] atd.
 
 #### Pipelining (model paralelismu)
 
@@ -82,7 +82,7 @@ void vectorizedSum(float *a, float *b, float *result, int size) {
 Tento kód provádí součet dvou vektorů **a** a **b** do vektoru **result** pomocí AVX vektorových instrukcí. Tyto instrukce provádějí součet osmi čísel současně, což zvyšuje rychlost výpočtu.
 
 EX2:
-Někdy však stačí do překladače gzc přidat flag (e.g. *-ftree-vectorizer-verbose=1*), který překladači řekne, že má sám paralelizovat cykly pomocí vektorových instrukcí. Například kód, který již známe:
+Někdy však stačí do překladače gcc přidat flag (e.g. *-ftree-vectorizer-verbose=1*), který překladači řekne, že má sám paralelizovat cykly pomocí vektorových instrukcí. Například kód, který již známe:
 
 ~~~
 for (i = 0; i < 1000; i++) 
@@ -146,17 +146,18 @@ Hierarchie cache paměti v procesoru je systém, ktery slouží k ukládání č
 
 Cílem je minimalizovat nutnost přístupu do hlavní paměti, která je pomalejší!
 
-
----
-
-
 ---
 
 ### Podpora paralelního programování v C a C++ 
 
 #### Pthreads (POSIX Threads)
 
-#todo 
+Pthreads (Posix Threads) jsou standardní rozhraní pro vícevláknové programování v operačním systému UNIX a podobných systémech. Poskytují programátorům prostředky pro vytváření a správu vláken (threads) v aplikacích.
+
+- pthread_create
+- pthread_exit
+- pthread_join atd.
+
 
 #### Thread (Vlákna v C++)
 
@@ -445,8 +446,6 @@ int main() {
 
 `#pragma omp barrier` slouží k synchronizaci vláken v rámci paralelního regionu. Před pokračováním dále se vlákna zastaví na bariéře, dokud všechna vlákna nepřijdou na tento bod.
 
-EX:
-
 ##### Critical
 
 `#pragma omp critical` zajišťuje, že pouze jedno vlákno může současně provádět kritickou sekci. Tím se minimalizuje [[#Souběh (race condition)]] při přístupu ke sdíleným datům.
@@ -539,6 +538,8 @@ Existence " kritické sekce" v systému: všechna vlákna používají stejnou f
 
 ![[Pasted image 20230828113015.png|center|400]]
 
+##### Threadpool a fronta úkolů
+
 Co kdyby mělo každé vlákno vlastní frontu?
 - Můžeme vytvořit vlastní frontu pro každé vlákno
 - Vlákno vkládá a vybírá úkoly z vlastní fronty
@@ -549,10 +550,6 @@ Jak zabezpečíme [[#Balancování a závislosti (dependencies)|vybalancování]
 - Když má vlákno prázdnou frontu, může "ukradnout" úkoly z jiné fronty!
 
 ![[Pasted image 20230828113222.png|center|400]]
-
-#### Threadpool a fronta úkolů
-
-#todo
 
 #### Balancování a závislosti (dependencies)
 
@@ -1005,7 +1002,7 @@ EX:
 	- zaznamená svůj stav $S_1$
 	- zaznamená stav kanálu: $C_{2,1}$ (pro $p_2$)
 	- zaznamená stav kanálu: $C_{3,1}$ (pro $p_3$)
-	- odešle každým odchozím kanálem ($p_2$ a $p_3$) ZNAČKU
+	- odešle každým odchozím kanálem ($p_2$ a $p_3$) ZNAČKU (a sobe)
 2. $p_3$ přijmá ZNAČKU od $p_1$
 	- zaznamená svůj stav $S_3$
 	- zaznamená stav kanálu $C_{1,3} = \{\}$ (jako prazdna mnozina, kde budou doručené zprávy, které přišly po této ZNAČCE)
@@ -1154,7 +1151,6 @@ Neco podobneho jako [[#Kruhový algoritmus]] pro vstup do KS.
 - Procesy jsou uspořádané do logického kruhu. 
 - Zprávy jsou posílány dokola kruhu v jednom směru. 
 - Procesy jsou schopné detekovat selhání ostatních procesů
-- 
 
 Princip:
 1. $P_i$ pošle po kruhu zprávu ELECTION($i$) obsahující jeho identifikátor
@@ -1236,7 +1232,7 @@ Kratce: ==Algoritmus pro konsensus musí garantovat bezpečnost a měl by maxima
 	1. Lídr je zodpovědný za koordinaci replikace logů mezi uzly
 	2. Každý uzel v systému udržuje svůj vlastní log operací
 	3. Když klient pošle lídrovi požadavek na provedení operace, lídr zapisuje tento požadavek do svého logu (append-only) a replikuje ho na ostatní uzly
-	4. Kdykoli je přijat nový požadavek, je do logu přidan s aktuálním číslem TERM
+	4. Kdykoli je přijat nový požadavek, je do logu přidan s aktuálním číslem TERM (epocha)
 
 ![[Pasted image 20230902105303.png]]
 

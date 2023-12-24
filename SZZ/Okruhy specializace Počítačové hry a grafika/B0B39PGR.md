@@ -146,10 +146,23 @@ Problém **minifikace** vzniká v důsledku rozdílu rozlišení mezi původní 
 
 **Mip-mapping** pomáhá snižovat aliasing a zlepšuje výkon tím, že snižuje počet texturovacích operací pro vzdálené objekty. OpenGL → <span class="term">glGenerateMipmap(GLenum target)</span>
 
+
+**Ok, ale jak správně vybrat mipmapu?**
+
+Úroveň mipmap <span class="maths">d</span> je zvolena podle velikosti pixelu promítnutého do prostoru textury (pixel je promítnut do úrovně 0 pokrývající <span class="maths">pu</span> texely ve směru *u* a <span class="maths">pv</span> texely ve směru *v*.
+Formula: <span class="maths">d ~ log2(max(pu, pv))</span>
+==*Na nejvyšší úrovni je textura 1 pixel!*==
+
+![[Pasted image 20230806181538.png | center | 300]]
+
+#### Filtrovani
+
 Typy filtrování | Popis | Demo
 ----- | ----- | ----- 
 <span class="term">GL_NEAREST</span> | prvek textury, který je nejblíže zadaným souřadnicím textury (rychlý, aliasing) | ![[Pasted image 20230809184418.png]]
 <span class="term">GL_LINEAR</span> | vážený průměr textury 2x2 prvky, které jsou nejblíže k zadané souřadnice textury ( pomalejší, ale plynulé) | ![[Pasted image 20230809184428.png]]
+
+Kombinace
 
 Metody filtrování | Popis 
 ----- | ----- 
@@ -160,13 +173,6 @@ Metody filtrování | Popis
 
 ![[Pasted image 20230806180105.png| center |500]]
 
-**Ok, ale jak správně vybrat mipmapu?**
-
-Úroveň mipmap <span class="maths">d</span> je zvolena podle velikosti pixelu promítnutého do prostoru textury (pixel je promítnut do úrovně 0 pokrývající <span class="maths">pu</span> texely ve směru *u* a <span class="maths">pv</span> texely ve směru *v*.
-Formula: <span class="maths">d ~ log2(max(pu, pv))</span>
-==*Na nejvyšší úrovni je textura 1 pixel!*==
-
-![[Pasted image 20230806181538.png | center | 300]]
 
 ---
 #### Mapa prostředí
@@ -352,7 +358,15 @@ V tomto modifikovaném případě by měřítkový faktor 2 v homogenní souřad
 ---
 ### Sestavení matice rotace podle jedné souřadné osy, škálování, nastavení kamery (lookAt) a záběru (viewport)
 
-#todo
+#### LookAt
+
+![[Pasted image 20230905094201.png]]
+
+#### ViewPort
+
+The $s_x$ a $s_y$ parameters for this mapping are the coordinates of the lower, left corner of the viewport.
+
+![[Pasted image 20230905094139.png]]
 
 ---
 ### Posloupnost souřadných systémů, kterými prochází vrchol, než získá souřadnice v rámci okna
@@ -409,7 +423,11 @@ Matice | Operace nad vektorem
 ----- | -----
 ![\|300](https://lh3.googleusercontent.com/0Oh922aOa5ffyrGK9cT1IDEG1hpzXzB9mpGasFvPzS5LoKvWv3tH79nY_m2bzleCS7w4Y4xepESXW8kjgKAl28w7ZqiiJLucpjdKnUQQBe9Q02oVKogL70zFen2k-ylMWqCbePiFdGROjiTevBXKa9k) | ![\|200](https://lh6.googleusercontent.com/juBbUMQl_rPj9cNN8xH8eQTmD7ZXh2NxO_YAjYFoBiuGes54g56nSIY6_SUAmLkwphQaHrgDmPXBi9irCfrX6vksgw9XLpABQolt5ZMy_ZjdSwOSo8W5P6rmOOGOHY3YUVftzAnF7ecjnK05ggeE9L0)
 
-**Poznamka**: Pouzivame -2, protoze box lezi v -z!!
+**Poznamky**: 
+- Pouzivame -2, protoze box lezi v -z!!
+- 2/.. pouzivame protoze checeme namapovat coords do \[-1, 1] (2 cisla)
+   (kdybychom meli 3, tak range by se zmenil na \[-1.5, 1.5])
+- Translace zahova centralizace projekce podle os (o kolik posunut objekt do near plane)
 
 ---
 
@@ -423,8 +441,8 @@ Matice | Operace nad vektorem
 
 **Poznamky**: 
 - ==*Promítání obecně NENÍ afinní transformace (nema 0 0 0 1)!*==
-- Translace probiha vuci osy z, proto piseme -1!
 - Důvodem hodnoty -1 je, že v homogenních souřadnicích je z-ová souřadnice oproti kartézským souřadnicím negována. Tato negace je nutná pro transformaci souřadnic do pravotočivé soustavy souřadnic.
+- 2n/.. pouzivame protoze checeme namapovat na near plane
 
 ---
 ### Gimbal lock
@@ -456,7 +474,9 @@ Je plynulý přechod objektu z jedné polohy do druhé ve 3D prostoru. V tomto p
 **Poznamka**: Cisty Quaternion (pure, ryze imaginarni) – <font color=#d7992>(0, q1, q2, q3)</font> oznaci vektor <font color=#d7992>(q1, q2, q3)</font>.
 “Vektor je cisty Quaternion, ve kterem realna cast je nulova.”
 
-**SLERP**: metoda speciálně navržená pro interpolaci rotací reprezentovaných kvaterniony. Poskytuje hladkou interpolaci podél nejkratší cesty na sférickém povrchu (q, r - kvaterniony, t - cas, omega - uhel otaceni):
+**LERP a SLERP**: 
+
+![[Pasted image 20230903152940.png]]
 
 ![center|](https://lh6.googleusercontent.com/YWWlRBSf8uMBgZ3t39-j_xE9fCu4gc8fqb-G3f0Q01z8YneVCACcRg-bytq1MdectYDjt7tBB7Bdne_1a9USSe1ArWySV0UKNV6zNlzCRUWlWW7k629uXooCRhBfO7Dh8_cTFxO_D4TrAKYMt2QiA8M)
 
@@ -684,7 +704,7 @@ K vytvoření této úsečky potřebujeme 2 body a 2 vektory. Pro každý bod a 
 
 ##### Catmull-Rom
 
-#todo 
+![[Pasted image 20230905095131.png]]
 
 #### Aproximace
 Tento typ má následující vlastnosti:

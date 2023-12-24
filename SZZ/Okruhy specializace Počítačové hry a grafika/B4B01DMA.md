@@ -244,6 +244,10 @@ Popis | Obrazek
 --- | :-:
 R je **tranzitivní**, jestliže pro všechna $a, b, c ∈ A$ platí $(aRb ∧ bRc) ⇒ aRc$. <br>Jinymy slovy: pokud jsou (a, b) a (b, c) v relaci, pak musí být i (a, c). <br>např. "A je vyšší než B, B je vyšší než C ⇒ A je vyšší než C"<br>Mnozina:$M = \{(1, 2), (3, 2), (4, 2), (4, 3), (4, 4)\}$ **(4, 3), (3, 2) -> (4, 2)** | ![[Pasted image 20230826164807.png\|150]]
 
+#### Ekvivalence (RST)
+
+#### Castecne Usporadani (RAT)
+
 ---
 
 ## 4. Indukce

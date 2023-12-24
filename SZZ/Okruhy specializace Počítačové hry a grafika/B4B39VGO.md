@@ -1,10 +1,3 @@
----
-updated: 2023-08-11T06:17
-date: 2023-08-11T06:16
-tags: writing/idea
-parent: [[Ideas]]
----
-
 ## Obsah
 1. [[#1. Vnímání barev|Vnímání barev]]
 2. [[#2. Barevné modely|Barevné modely]]

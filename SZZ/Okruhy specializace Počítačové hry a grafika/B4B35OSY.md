@@ -82,7 +82,6 @@ int main()
 {
     asm volatile (
         "int $0x80"
-        :
         : "a" (4), "b" (1), "c" ("Hello World\n"), "d" (12)
         : "memory"
     );
